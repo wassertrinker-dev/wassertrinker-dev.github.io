@@ -1,0 +1,9 @@
+- GitHub Issues sind die verbindlichen User Stories.
+- Implementiert werden nur ausdrücklich freigegebene Stories.
+- Jede Story wird auf einem eigenen Branch `story/<issue-nummer>-<kurzname>` umgesetzt.
+- Während der Implementierung arbeitet nur ein Agent schreibend am Code.
+- Vor einem Merge nach main muss das Merge-Gate bestanden sein.
+- Ein Merge oder Push erfolgt nur nach ausdrücklicher menschlicher Freigabe.
+- Interne Prompts und Agentenchats werden nicht dokumentiert.
+- Dokumentation wird nur beim Abschluss einer Story oder bei einem Release aktualisiert.
+- GitHub Pages wird aus main veröffentlicht.
