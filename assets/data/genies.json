@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Albert Einstein",
+    "jahre": "1879–1955",
+    "zitat": "Das ist nicht mehr relativ.",
+    "bildpfad": "assets/images/genies/Einstein.png"
+  },
+  {
+    "name": "Alan Turing",
+    "jahre": "1912–1954",
+    "zitat": "Endlich besteht jemand meinen Test.",
+    "bildpfad": "assets/images/genies/Turing.png"
+  },
+  {
+    "name": "Ada Lovelace",
+    "jahre": "1815–1852",
+    "zitat": "Ich schrieb den ersten Algorithmus. Jetzt schreibe ich nur noch Anforderungen.",
+    "bildpfad": "assets/images/genies/Lovelace.png"
+  },
+  {
+    "name": "Johann Wolfgang von Goethe",
+    "jahre": "1749–1832",
+    "zitat": "Da steh ich nun, ich armer Tor – mein Agent schreibt, ich review nur.",
+    "bildpfad": "assets/images/genies/Goethe.png"
+  },
+  {
+    "name": "William Shakespeare",
+    "jahre": "1564–1616",
+    "zitat": "To prompt or not to prompt – das ist nicht mehr die Frage.",
+    "bildpfad": "assets/images/genies/Shakespeare.png"
+  },
+  {
+    "name": "Ludwig van Beethoven",
+    "jahre": "1770–1827",
+    "zitat": "Endlich dirigiere ich wieder, statt selbst zu spielen.",
+    "bildpfad": "assets/images/genies/Beethoven.png"
+  },
+  {
+    "name": "Isaac Newton",
+    "jahre": "1643–1727",
+    "zitat": "Ich stand auf den Schultern von Riesen. Jetzt leite ich sie.",
+    "bildpfad": "assets/images/genies/Newton.png"
+  },
+  {
+    "name": "Konrad Zuse",
+    "jahre": "1910–1995",
+    "zitat": "Ich baute den ersten Computer. Jetzt baut er für mich.",
+    "bildpfad": "assets/images/genies/Zuse.png"
+  },
+  {
+    "name": "Grace Hopper",
+    "jahre": "1906–1992",
+    "zitat": "Ich fand den ersten Bug. Heute debuggen Agents.",
+    "bildpfad": "assets/images/genies/Hopper.png"
+  },
+  {
+    "name": "Marie Curie",
+    "jahre": "1867–1934",
+    "zitat": "Meine strahlendste Entdeckung: ein Team, das nie schläft.",
+    "bildpfad": "assets/images/genies/Curie.png"
+  }
+]
