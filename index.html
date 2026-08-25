@@ -288,6 +288,142 @@
       text-align: center;
     }
 
+    .workflow {
+      margin-top: clamp(80px, 13vw, 156px);
+    }
+
+    .workflow figure { margin: 0; }
+
+    .workflow-graphic {
+      margin-top: 28px;
+      position: relative;
+      height: min(78vh, 820px);
+      min-height: 430px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--deep);
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .workflow-graphic:active { cursor: grabbing; }
+
+    .workflow-graphic:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .workflow-canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 900px;
+      will-change: transform;
+    }
+
+    .workflow-export {
+      width: 100%;
+      display: block;
+    }
+
+    .workflow-toolbar {
+      position: absolute;
+      z-index: 1;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 6px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--deep) 86%, transparent);
+      backdrop-filter: blur(10px);
+    }
+
+    .workflow-tool {
+      min-width: 38px;
+      min-height: 38px;
+      padding: 0 10px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--ink);
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 800;
+    }
+
+    .workflow-tool:hover,
+    .workflow-tool:focus-visible {
+      border-color: var(--accent-hover);
+      background: var(--accent-tint);
+    }
+
+    :root[data-theme="gold"] .workflow-export {
+      filter: sepia(1) saturate(1.25) hue-rotate(350deg);
+    }
+
+    .workflow-steps {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 22px 0 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: workflow-step;
+    }
+
+    .workflow-steps li {
+      position: relative;
+      min-height: 116px;
+      padding: 16px 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--accent-fade);
+      counter-increment: workflow-step;
+    }
+
+    .workflow-steps li::before {
+      content: "0" counter(workflow-step);
+      display: block;
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+    }
+
+    .workflow-steps strong,
+    .workflow-steps span {
+      display: block;
+    }
+
+    .workflow-steps strong {
+      font-size: .92rem;
+      line-height: 1.2;
+    }
+
+    .workflow-steps span {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: .78rem;
+      line-height: 1.4;
+    }
+
+    .workflow-source {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: .86rem;
+      text-align: right;
+    }
+
+    .workflow-source a {
+      color: var(--ice);
+      font-weight: 700;
+    }
+
     .genies {
       margin-top: clamp(80px, 13vw, 156px);
     }
@@ -460,6 +596,7 @@
       .hero { grid-template-columns: 1fr; }
       .visual { max-width: 590px; width: 100%; margin: 0 auto; }
       .iceberg { min-height: 560px; }
+      .workflow-steps { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 520px) {
@@ -472,6 +609,8 @@
       .body { padding: 40px 26px 32px; }
       .body ul { grid-template-columns: 1fr; gap: 9px; }
       .body li { font-size: .88rem; }
+      .workflow-graphic { height: 68vh; min-height: 380px; }
+      .workflow-toolbar { top: 10px; right: 10px; }
       .genie-slide { grid-template-columns: 1fr; }
       .genie-portrait { max-height: 300px; }
       footer { flex-direction: column; }
@@ -532,6 +671,39 @@
         </div>
         <p class="caption">10 % sichtbar. 90 % Produktverantwortung.</p>
       </div>
+    </section>
+
+    <section class="workflow" aria-labelledby="workflow-heading">
+      <div class="section-heading">
+        <p class="eyebrow">So entsteht eine Änderung</p>
+        <h2 id="workflow-heading">Von der Idee zur Veröffentlichung.</h2>
+        <p>Ein nachvollziehbarer Prozess: Erst wird die Story gemeinsam geschärft, danach folgt die kontrollierte Auslieferung.</p>
+      </div>
+
+      <figure>
+        <div class="workflow-graphic" id="workflow-graphic" tabindex="0" aria-label="Interaktives Workflow-Diagramm. Mit der Maus oder dem Finger verschieben; die Pfeiltasten verschieben das Diagramm.">
+          <div class="workflow-toolbar" aria-label="Diagramm-Navigation">
+            <button class="workflow-tool" id="workflow-zoom-out" type="button" aria-label="Verkleinern">−</button>
+            <button class="workflow-tool" id="workflow-zoom-reset" type="button" aria-label="Ansicht einpassen">Fit</button>
+            <button class="workflow-tool" id="workflow-zoom-in" type="button" aria-label="Vergrößern">+</button>
+          </div>
+          <div class="workflow-canvas" id="workflow-canvas">
+            <img class="workflow-export" src="assets/workflow/workflow-diagram.svg" alt="Ablaufdiagramm: Ein Mensch entwickelt mit dem Story Writer Agent eine Story bis zur Freigabe. Ein Lead Agent implementiert auf dem Story-Branch. Nach Test und Pull Request prüfen fünf unabhängige Agenten gleichzeitig UX, Architektur, Codequalität, Security sowie Tests und Dokumentation. Die Ergebnisse laufen in einer gemeinsamen GO- oder NO-GO-Entscheidung zusammen. Bei NO-GO wird nachgebessert; bei GO entscheidet ein Mensch über den Merge und GitHub Pages veröffentlicht aus main.">
+          </div>
+        </div>
+        <figcaption class="workflow-source"><a href="assets/workflow/workflow-diagram.excalidraw">Excalidraw-Quelldatei herunterladen</a></figcaption>
+      </figure>
+
+      <ol class="workflow-steps" aria-label="Workflow mit Entscheidungen und Wiederholungen als Text">
+        <li><strong>Story Writer Agent</strong><span>Ein Mensch und der spezialisierte Story Writer Agent besprechen die Idee. Entwurf und Akzeptanzkriterien werden so lange geschärft, bis der Mensch „Story freigeben“ sagt.</span></li>
+        <li><strong>GitHub Issue erstellen</strong><span>Erst nach der Freigabe wird der Entwurf zur verbindlichen User Story.</span></li>
+        <li><strong>Nächsten Schritt wählen</strong><span>Es können weitere Stories mit dem Story Writer vorbereitet werden – oder die Umsetzung einer freigegebenen Story beginnt.</span></li>
+        <li><strong>Lead Agent implementiert</strong><span>Während der Umsetzung arbeitet genau ein Agent schreibend auf dem Story-Branch. Danach folgen Test und notwendige Dokumentation.</span></li>
+        <li><strong>Pull Request erstellen</strong><span>Die geprüfte Änderung wird mit der verbindlichen Story verknüpft und zur Abnahme bereitgestellt.</span></li>
+        <li><strong>Fünf Agenten prüfen parallel</strong><span>UX, Architektur, Codequalität, Security sowie Tests und Dokumentation untersuchen den Pull Request unabhängig und gleichzeitig. Ihre Ergebnisse werden zu GO oder NO-GO zusammengeführt.</span></li>
+        <li><strong>Bei NO-GO nachbessern</strong><span>Blockierende Befunde gehen zurück an die Umsetzung. Nach Korrektur und Test läuft das Merge Gate erneut.</span></li>
+        <li><strong>Menschlich freigeben und veröffentlichen</strong><span>Nur nach ausdrücklicher Freigabe wird nach <code>main</code> gemergt; GitHub Pages veröffentlicht daraus die Seite.</span></li>
+      </ol>
     </section>
 
     <section class="genies" aria-labelledby="genies-heading">
@@ -672,6 +844,96 @@
     });
 
     carousel.addEventListener("pointercancel", () => { swipeStart = null; });
+
+    const workflowGraphic = document.getElementById("workflow-graphic");
+    const workflowCanvas = document.getElementById("workflow-canvas");
+    const workflowZoomOut = document.getElementById("workflow-zoom-out");
+    const workflowZoomReset = document.getElementById("workflow-zoom-reset");
+    const workflowZoomIn = document.getElementById("workflow-zoom-in");
+    let workflowFitZoom = 1;
+    let workflowZoom = 1;
+    let workflowPanX = 0;
+    let workflowPanY = 0;
+    let workflowDrag = null;
+
+    const clamp = (value, minimum, maximum) => Math.min(Math.max(value, minimum), maximum);
+
+    const renderWorkflowView = () => {
+      workflowCanvas.style.transform = `translate(calc(-50% + ${workflowPanX}px), calc(-50% + ${workflowPanY}px)) scale(${workflowZoom})`;
+    };
+
+    const resetWorkflowView = () => {
+      const padding = 32;
+      workflowFitZoom = Math.min(
+        (workflowGraphic.clientWidth - padding) / 900,
+        (workflowGraphic.clientHeight - padding) / 1900,
+        1,
+      );
+      workflowZoom = workflowFitZoom;
+      workflowPanX = 0;
+      workflowPanY = 0;
+      renderWorkflowView();
+    };
+
+    const zoomWorkflow = (factor) => {
+      workflowZoom = clamp(workflowZoom * factor, workflowFitZoom, 2);
+      renderWorkflowView();
+    };
+
+    workflowZoomOut.addEventListener("click", () => zoomWorkflow(0.8));
+    workflowZoomReset.addEventListener("click", resetWorkflowView);
+    workflowZoomIn.addEventListener("click", () => zoomWorkflow(1.25));
+
+    workflowGraphic.addEventListener("pointerdown", (event) => {
+      if (!event.isPrimary || event.target.closest("button")) return;
+      workflowDrag = {
+        x: event.clientX,
+        y: event.clientY,
+        panX: workflowPanX,
+        panY: workflowPanY,
+      };
+      workflowGraphic.setPointerCapture(event.pointerId);
+    });
+
+    workflowGraphic.addEventListener("pointermove", (event) => {
+      if (!workflowDrag || !event.isPrimary) return;
+      workflowPanX = workflowDrag.panX + event.clientX - workflowDrag.x;
+      workflowPanY = workflowDrag.panY + event.clientY - workflowDrag.y;
+      renderWorkflowView();
+    });
+
+    const finishWorkflowDrag = () => { workflowDrag = null; };
+    workflowGraphic.addEventListener("pointerup", finishWorkflowDrag);
+    workflowGraphic.addEventListener("pointercancel", finishWorkflowDrag);
+
+    workflowGraphic.addEventListener("keydown", (event) => {
+      const amount = 32;
+      const movement = {
+        ArrowLeft: [-amount, 0],
+        ArrowRight: [amount, 0],
+        ArrowUp: [0, -amount],
+        ArrowDown: [0, amount],
+      }[event.key];
+
+      if (movement) {
+        event.preventDefault();
+        workflowPanX += movement[0];
+        workflowPanY += movement[1];
+        renderWorkflowView();
+      } else if (event.key === "+" || event.key === "=") {
+        event.preventDefault();
+        zoomWorkflow(1.25);
+      } else if (event.key === "-") {
+        event.preventDefault();
+        zoomWorkflow(0.8);
+      } else if (event.key === "0") {
+        event.preventDefault();
+        resetWorkflowView();
+      }
+    });
+
+    window.addEventListener("resize", resetWorkflowView);
+    resetWorkflowView();
 
     const localGenieData = document.getElementById("local-genie-data");
 
