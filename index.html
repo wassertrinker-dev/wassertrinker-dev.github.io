@@ -56,6 +56,11 @@
     body {
       margin: 0;
       min-height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr) auto;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--ink);
       background:
@@ -65,18 +70,29 @@
 
     a { color: inherit; }
 
-    main {
-      width: min(1120px, calc(100% - 40px));
-      margin: 0 auto;
-      padding: 34px 0 56px;
+    .site-header,
+    .site-footer {
+      z-index: 2;
+      border-color: var(--line);
+      background: color-mix(in srgb, var(--deep) 92%, transparent);
+      backdrop-filter: blur(16px);
     }
 
-    nav {
+    .site-header { border-bottom: 1px solid var(--line); }
+
+    .header-inner,
+    .site-footer {
+      width: calc(100% - 40px);
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-      margin-bottom: clamp(64px, 10vw, 120px);
+      min-height: 72px;
     }
 
     .mark {
@@ -84,29 +100,13 @@
       font-weight: 800;
       letter-spacing: .18em;
       text-transform: uppercase;
+      text-decoration: none;
     }
 
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      color: var(--muted);
-      font-size: .86rem;
-    }
-
-    .status::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #73f5b1;
-      box-shadow: 0 0 18px rgba(115, 245, 177, .75);
-    }
-
-    .nav-actions {
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 10px;
     }
 
     .theme-toggle {
@@ -146,7 +146,7 @@
     .hero {
       display: grid;
       grid-template-columns: 1.08fr .92fr;
-      gap: clamp(44px, 8vw, 100px);
+      gap: clamp(30px, 5vw, 56px);
       align-items: center;
     }
 
@@ -162,7 +162,7 @@
     h1 {
       max-width: 720px;
       margin: 0;
-      font-size: clamp(3rem, 7vw, 6.6rem);
+      font-size: clamp(2.7rem, 5.5vw, 4.8rem);
       line-height: .94;
       letter-spacing: -.065em;
     }
@@ -182,43 +182,168 @@
 
     .lead strong { color: var(--ink); }
 
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 34px;
-    }
-
-    .button {
+    .header-link,
+    .sign-in-button {
       display: inline-flex;
-      min-height: 46px;
+      min-height: 38px;
       align-items: center;
       justify-content: center;
-      padding: 0 18px;
+      padding: 0 13px;
       border: 1px solid var(--line);
       border-radius: 999px;
       color: var(--ink);
+      background: transparent;
       text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+      font-size: .78rem;
       font-weight: 750;
       transition: transform .2s ease, border-color .2s ease, background .2s ease;
     }
 
-    .button:hover,
-    .button:focus-visible {
+    .header-link:hover,
+    .header-link:focus-visible,
+    .sign-in-button:hover,
+    .sign-in-button:focus-visible {
       transform: translateY(-2px);
       border-color: var(--accent-hover);
       background: var(--accent-tint);
     }
 
-    .button.primary {
-      border-color: transparent;
+    .sign-in-button {
+      border-color: var(--ice-border);
       color: var(--deep);
       background: var(--ice);
     }
 
+    .app-shell {
+      min-height: 0;
+      min-width: 0;
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--deep) 0%, var(--deep-2) 48%, var(--deep) 100%);
+    }
+
+    .section-navigation {
+      position: absolute;
+      z-index: 1;
+      top: 24px;
+      left: 24px;
+      width: 236px;
+      padding: 24px 16px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: color-mix(in srgb, var(--deep) 86%, transparent);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, .2);
+      transition: width .2s ease, padding .2s ease;
+    }
+
+    .section-navigation nav {
+      margin-top: 44px;
+    }
+
+    .toc-label {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .section-links {
+      display: grid;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .section-links a {
+      display: block;
+      padding: 10px 12px;
+      border-left: 2px solid transparent;
+      color: var(--muted);
+      font-size: .88rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .section-links a:hover,
+    .section-links a:focus-visible,
+    .section-links a[aria-current="true"] {
+      border-color: var(--accent);
+      color: var(--ink);
+      background: var(--accent-tint);
+    }
+
+    .toc-toggle {
+      position: absolute;
+      top: 18px;
+      right: 16px;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--ink);
+      background: var(--deep-2);
+      cursor: pointer;
+      font-size: 1.15rem;
+    }
+
+    .toc-toggle:hover,
+    .toc-toggle:focus-visible {
+      border-color: var(--accent-hover);
+      background: var(--accent-tint);
+    }
+
+    .section-navigation.is-collapsed {
+      width: 68px;
+      padding-right: 16px;
+      padding-left: 16px;
+    }
+
+    .section-navigation.is-collapsed nav {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .section-navigation.is-collapsed .toc-toggle { right: 16px; }
+
+    main {
+      height: 100%;
+      width: 100%;
+      min-width: 0;
+      min-height: 0;
+      flex: 1;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+    }
+
+    .content {
+      width: calc(100% - 48px);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: clamp(28px, 4vw, 52px) 0;
+    }
+
+    .content-section {
+      scroll-margin-top: 28px;
+      padding: clamp(24px, 3.5vw, 42px);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(135deg, var(--accent-fade), transparent 60%), color-mix(in srgb, var(--deep) 76%, transparent);
+    }
+
     .iceberg {
       position: relative;
-      min-height: 620px;
+      min-height: 500px;
       display: grid;
       grid-template-rows: 24% 76%;
       filter: drop-shadow(0 30px 35px rgba(0, 0, 0, .26));
@@ -289,7 +414,7 @@
     }
 
     .workflow {
-      margin-top: clamp(80px, 13vw, 156px);
+      margin-top: 28px;
     }
 
     .workflow figure { margin: 0; }
@@ -425,7 +550,7 @@
     }
 
     .genies {
-      margin-top: clamp(80px, 13vw, 156px);
+      margin-top: 28px;
     }
 
     .section-heading {
@@ -581,13 +706,12 @@
       text-align: center;
     }
 
-    footer {
+    .site-footer {
       display: flex;
       justify-content: space-between;
       gap: 24px;
-      margin-top: clamp(72px, 12vw, 150px);
-      padding-top: 24px;
-      border-top: 1px solid var(--line);
+      min-height: 62px;
+      align-items: center;
       color: var(--muted);
       font-size: .88rem;
     }
@@ -595,17 +719,52 @@
     @media (max-width: 820px) {
       .hero { grid-template-columns: 1fr; }
       .visual { max-width: 590px; width: 100%; margin: 0 auto; }
-      .iceberg { min-height: 560px; }
+      .iceberg { min-height: 480px; }
       .workflow-steps { grid-template-columns: 1fr; }
+
+      .section-navigation {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        width: 54px;
+        min-height: 54px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: color-mix(in srgb, var(--deep) 94%, transparent);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .22);
+      }
+
+      .section-navigation nav { display: none; }
+
+      .section-navigation.is-expanded {
+        width: min(260px, calc(100% - 24px));
+        padding: 54px 12px 12px;
+      }
+
+      .section-navigation.is-expanded nav { display: block; margin: 0; }
+
+      .section-navigation.is-collapsed { padding: 10px; }
+
+      .section-navigation.is-collapsed nav { opacity: 1; pointer-events: auto; }
+
+      .toc-toggle,
+      .section-navigation.is-collapsed .toc-toggle { top: 10px; right: 10px; }
+
+      .content { width: min(100% - 32px, 1120px); }
     }
 
     @media (max-width: 520px) {
-      main { width: min(100% - 28px, 1120px); padding-top: 22px; }
-      nav { align-items: flex-start; margin-bottom: 60px; }
-      .nav-actions { gap: 10px; }
-      .status { max-width: 130px; text-align: right; }
+      .header-inner,
+      .site-footer { width: min(100% - 28px, 1120px); }
+      .header-inner { min-height: 62px; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 9px 0; }
+      .mark { flex-basis: 100%; }
+      .mark { font-size: .66rem; letter-spacing: .11em; }
+      .header-actions { width: 100%; justify-content: space-between; gap: 6px; }
+      .header-link { padding: 0 8px; font-size: .68rem; }
+      .sign-in-button { padding: 0 10px; }
       .theme-toggle { padding-left: 10px; font-size: .7rem; }
-      .iceberg { min-height: 520px; }
+      .iceberg { min-height: 440px; }
       .body { padding: 40px 26px 32px; }
       .body ul { grid-template-columns: 1fr; gap: 9px; }
       .body li { font-size: .88rem; }
@@ -613,12 +772,18 @@
       .workflow-toolbar { top: 10px; right: 10px; }
       .genie-slide { grid-template-columns: 1fr; }
       .genie-portrait { max-height: 300px; }
-      footer { flex-direction: column; }
+      .content { width: min(100% - 28px, 1120px); padding: 24px 0; }
+      .content-section { padding: 24px 18px; border-radius: 20px; }
+      .site-footer { min-height: 54px; font-size: .7rem; gap: 10px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .button,
+      .theme-toggle,
+      .header-link,
+      .sign-in-button,
+      .section-navigation,
+      .toc-toggle,
       .genie-track,
       .carousel-button,
       .carousel-dot { transition: none; }
@@ -626,16 +791,34 @@
   </style>
 </head>
 <body>
-  <main>
-    <nav aria-label="Seitennavigation">
-      <div class="mark">wassertrinker.dev</div>
-      <div class="nav-actions">
-        <div class="status">Case Study entsteht gerade</div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="mark" href="#eisberg">Wassertrinker.de Case Study</a>
+      <div class="header-actions">
+        <a class="header-link" href="https://wassertrinker-dev.github.io/Motion-Leap/dist/">Motion Leap ansehen</a>
         <button class="theme-toggle" id="change-style" type="button" aria-pressed="false">Change Style</button>
+        <button class="sign-in-button" type="button">Anmelden</button>
       </div>
-    </nav>
+    </div>
+  </header>
 
-    <section class="hero" aria-labelledby="headline">
+  <div class="app-shell">
+    <aside class="section-navigation" id="section-navigation">
+      <button class="toc-toggle" id="toc-toggle" type="button" aria-expanded="true" aria-controls="section-links" aria-label="Inhaltsnavigation einklappen">‹</button>
+      <nav aria-label="Inhaltsnavigation">
+        <p class="toc-label">Inhalt</p>
+        <ul class="section-links" id="section-links">
+          <li><a href="#eisberg" data-section-link aria-current="true">Eisberg</a></li>
+          <li><a href="#workflow" data-section-link>Workflow</a></li>
+          <li><a href="#genies" data-section-link>Tote Genies</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main id="content-scroll" tabindex="-1">
+      <div class="content">
+
+    <section class="content-section hero" id="eisberg" data-section aria-labelledby="headline">
       <div>
         <p class="eyebrow">AI-native Product Engineering</p>
         <h1 id="headline">Der Prompt ist <span>nur die Spitze.</span></h1>
@@ -644,10 +827,6 @@
           Anforderungen schärfen, Agents koordinieren und Qualität nachweisen.
           <strong>Deshalb muss ein guter AI Developer auch wie ein Product Owner arbeiten.</strong>
         </p>
-        <div class="actions">
-          <a class="button primary" href="https://github.com/wassertrinker-dev" rel="noreferrer">GitHub-Profil</a>
-          <a class="button" href="https://wassertrinker-dev.github.io/Motion-Leap/dist/">Motion Leap ansehen</a>
-        </div>
       </div>
 
       <div class="visual">
@@ -673,7 +852,7 @@
       </div>
     </section>
 
-    <section class="workflow" aria-labelledby="workflow-heading">
+    <section class="content-section workflow" id="workflow" data-section aria-labelledby="workflow-heading">
       <div class="section-heading">
         <p class="eyebrow">So entsteht eine Änderung</p>
         <h2 id="workflow-heading">Von der Idee zur Veröffentlichung.</h2>
@@ -706,7 +885,7 @@
       </ol>
     </section>
 
-    <section class="genies" aria-labelledby="genies-heading">
+    <section class="content-section genies" id="genies" data-section aria-labelledby="genies-heading">
       <div class="section-heading">
         <p class="eyebrow">Tote Genies</p>
         <h2 id="genies-heading">Sie hätten bestimmt noch einen Kommentar.</h2>
@@ -727,11 +906,13 @@
       <p class="genie-disclaimer">Alle Zitate sind fiktiv und als humorvolle Hommage gemeint.</p>
     </section>
 
-    <footer>
+      </div>
+    </main>
+  </div>
+  <footer class="site-footer">
       <span>Die vollständige Case Study folgt.</span>
       <span>Built transparently with Codex and specialized agents.</span>
     </footer>
-  </main>
   <script>
     window.addEventListener("DOMContentLoaded", () => {
     const styleToggle = document.getElementById("change-style");
@@ -844,6 +1025,71 @@
     });
 
     carousel.addEventListener("pointercancel", () => { swipeStart = null; });
+
+    const contentScroll = document.getElementById("content-scroll");
+    const sectionNavigation = document.getElementById("section-navigation");
+    const tocToggle = document.getElementById("toc-toggle");
+    const tocNavigation = sectionNavigation.querySelector("nav");
+    const sectionLinks = [...document.querySelectorAll("[data-section-link]")];
+    const contentSections = [...document.querySelectorAll("[data-section]")];
+    const compactNavigation = window.matchMedia("(max-width: 820px)");
+
+    const setNavigationExpanded = (expanded) => {
+      const isCompact = compactNavigation.matches;
+      sectionNavigation.classList.toggle("is-collapsed", !expanded && !isCompact);
+      sectionNavigation.classList.toggle("is-expanded", expanded && isCompact);
+      tocNavigation.toggleAttribute("inert", !expanded);
+      tocNavigation.setAttribute("aria-hidden", String(!expanded));
+      sectionLinks.forEach((link) => {
+        if (expanded) {
+          link.removeAttribute("tabindex");
+        } else {
+          link.setAttribute("tabindex", "-1");
+        }
+      });
+      tocToggle.setAttribute("aria-expanded", String(expanded));
+      tocToggle.setAttribute("aria-label", expanded ? "Inhaltsnavigation einklappen" : "Inhaltsnavigation ausklappen");
+      tocToggle.textContent = expanded ? "‹" : "›";
+    };
+
+    setNavigationExpanded(!compactNavigation.matches);
+
+    tocToggle.addEventListener("click", () => {
+      setNavigationExpanded(tocToggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    compactNavigation.addEventListener("change", (event) => {
+      setNavigationExpanded(!event.matches);
+    });
+
+    const setActiveSection = (id) => {
+      sectionLinks.forEach((link) => {
+        if (link.getAttribute("href") === `#${id}`) {
+          link.setAttribute("aria-current", "true");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      const visibleSection = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((first, second) => second.intersectionRatio - first.intersectionRatio)[0];
+      if (visibleSection) setActiveSection(visibleSection.target.id);
+    }, {
+      root: contentScroll,
+      rootMargin: "-18% 0px -58%",
+      threshold: [0.1, 0.35, 0.6],
+    });
+
+    contentSections.forEach((section) => sectionObserver.observe(section));
+
+    sectionLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        if (compactNavigation.matches) setNavigationExpanded(false);
+      });
+    });
 
     const workflowGraphic = document.getElementById("workflow-graphic");
     const workflowCanvas = document.getElementById("workflow-canvas");
