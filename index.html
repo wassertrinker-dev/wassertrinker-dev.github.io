@@ -779,7 +779,11 @@
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .button,
+      .theme-toggle,
+      .header-link,
+      .sign-in-button,
+      .section-navigation,
+      .toc-toggle,
       .genie-track,
       .carousel-button,
       .carousel-dot { transition: none; }
@@ -1025,6 +1029,7 @@
     const contentScroll = document.getElementById("content-scroll");
     const sectionNavigation = document.getElementById("section-navigation");
     const tocToggle = document.getElementById("toc-toggle");
+    const tocNavigation = sectionNavigation.querySelector("nav");
     const sectionLinks = [...document.querySelectorAll("[data-section-link]")];
     const contentSections = [...document.querySelectorAll("[data-section]")];
     const compactNavigation = window.matchMedia("(max-width: 820px)");
@@ -1033,6 +1038,15 @@
       const isCompact = compactNavigation.matches;
       sectionNavigation.classList.toggle("is-collapsed", !expanded && !isCompact);
       sectionNavigation.classList.toggle("is-expanded", expanded && isCompact);
+      tocNavigation.toggleAttribute("inert", !expanded);
+      tocNavigation.setAttribute("aria-hidden", String(!expanded));
+      sectionLinks.forEach((link) => {
+        if (expanded) {
+          link.removeAttribute("tabindex");
+        } else {
+          link.setAttribute("tabindex", "-1");
+        }
+      });
       tocToggle.setAttribute("aria-expanded", String(expanded));
       tocToggle.setAttribute("aria-label", expanded ? "Inhaltsnavigation einklappen" : "Inhaltsnavigation ausklappen");
       tocToggle.textContent = expanded ? "‹" : "›";
