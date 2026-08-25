@@ -7,3 +7,4 @@
 - Interne Prompts und Agentenchats werden nicht dokumentiert.
 - Dokumentation wird nur beim Abschluss einer Story oder bei einem Release aktualisiert.
 - GitHub Pages wird aus main veröffentlicht.
+- Vor Änderungen am Seitenlayout muss `ARCHITECTURE.md` gelesen werden.
