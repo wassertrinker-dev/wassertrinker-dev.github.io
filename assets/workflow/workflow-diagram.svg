@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1900" viewBox="0 0 900 1900" role="img" aria-labelledby="title desc">
+  <title id="title">Agentischer Workflow mit parallelem Merge Gate</title>
+  <desc id="desc">Der Story Writer Agent entwickelt mit einem Menschen die Story bis zur Freigabe. Ein Lead Agent implementiert auf einem Story-Branch. Nach Test und Pull Request prüfen fünf unabhängige Agenten parallel UX, Architektur, Codequalität, Security sowie Tests und Dokumentation. Ihre Ergebnisse führen zur gemeinsamen GO- oder NO-GO-Entscheidung.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="#62d9ff"/></marker>
+    <style>
+      .line{fill:none;stroke:#62d9ff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#arrow)}
+      .bus{fill:none;stroke:#62d9ff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .box{fill:#0a2036;stroke:#bcecff;stroke-width:2}.agent{fill:#0d2943;stroke:#62d9ff;stroke-width:2}.decision{fill:#102b45;stroke:#62d9ff;stroke-width:2}
+      .label{fill:#f3f7fb;font:700 22px Arial,sans-serif;text-anchor:middle}.smallLabel{fill:#f3f7fb;font:700 16px Arial,sans-serif;text-anchor:middle}.copy{fill:#9fb2c7;font:16px Arial,sans-serif;text-anchor:middle}.smallCopy{fill:#9fb2c7;font:13px Arial,sans-serif;text-anchor:middle}.tag{fill:#62d9ff;font:700 14px Arial,sans-serif;letter-spacing:1px;text-anchor:middle}.edge{fill:#bcecff;font:700 14px Arial,sans-serif}
+    </style>
+  </defs>
+  <rect width="900" height="1900" rx="32" fill="#07111f"/>
+
+  <path class="line" d="M450 118v42"/><path class="line" d="M450 250v42"/><path class="line" d="M450 382v38"/><path class="line" d="M450 540v42"/><path class="line" d="M450 672v38"/><path class="line" d="M450 830v42"/><path class="line" d="M450 962v42"/><path class="line" d="M450 1094v42"/><path class="line" d="M450 1226v34"/>
+  <path class="line" d="M330 480H130V205h155"/><text class="edge" x="142" y="463">NOCH NICHT</text>
+  <path class="line" d="M570 625h190V205H615"/><text class="edge" x="666" y="606">WEITERE STORY</text>
+
+  <rect class="box" x="285" y="38" width="330" height="80" rx="18"/><text class="tag" x="450" y="66">MENSCH</text><text class="label" x="450" y="95">Idee oder Bedarf</text>
+  <rect class="agent" x="285" y="160" width="330" height="90" rx="18"/><text class="tag" x="450" y="188">STORY WRITER AGENT</text><text class="label" x="450" y="217">Idee besprechen</text><text class="copy" x="450" y="239">Rückfragen und fachliche Schärfung</text>
+  <rect class="box" x="285" y="292" width="330" height="90" rx="18"/><text class="tag" x="450" y="320">ENTWURF</text><text class="label" x="450" y="349">Story + Akzeptanzkriterien</text><text class="copy" x="450" y="371">vollständig zur Prüfung anzeigen</text>
+  <polygon class="decision" points="450,420 570,480 450,540 330,480"/><text class="label" x="450" y="474">Story</text><text class="copy" x="450" y="499">freigegeben?</text><text class="edge" x="468" y="568">JA</text>
+  <rect class="box" x="285" y="582" width="330" height="90" rx="18"/><text class="tag" x="450" y="610">GITHUB</text><text class="label" x="450" y="639">Issue wird erstellt</text><text class="copy" x="450" y="661">verbindliche User Story</text>
+  <polygon class="decision" points="450,710 570,770 450,830 330,770"/><text class="label" x="450" y="764">Nächster</text><text class="copy" x="450" y="789">Schritt?</text><text class="edge" x="468" y="858">UMSETZUNG</text>
+  <rect class="agent" x="285" y="872" width="330" height="90" rx="18"/><text class="tag" x="450" y="900">LEAD AGENT · EIN SCHREIBENDER AGENT</text><text class="label" x="450" y="929">Implementierung</text><text class="copy" x="450" y="951">isoliert auf dem Story-Branch</text>
+  <rect class="box" x="285" y="1004" width="330" height="90" rx="18"/><text class="tag" x="450" y="1032">QUALITÄT</text><text class="label" x="450" y="1061">Test + notwendige Doku</text><text class="copy" x="450" y="1083">Ergebnis für Abnahme vorbereiten</text>
+  <rect class="box" x="285" y="1136" width="330" height="90" rx="18"/><text class="tag" x="450" y="1164">PULL REQUEST</text><text class="label" x="450" y="1193">Änderung zur Prüfung</text><text class="copy" x="450" y="1215">mit der Story verknüpft</text>
+
+  <rect class="agent" x="240" y="1260" width="420" height="80" rx="18"/><text class="tag" x="450" y="1288">MERGE-GATE-KOORDINATION</text><text class="label" x="450" y="1318">5 Agenten prüfen parallel</text>
+  <path class="bus" d="M450 1340v38M100 1378h700"/>
+  <path class="line" d="M100 1378v32"/><path class="line" d="M275 1378v32"/><path class="line" d="M450 1378v32"/><path class="line" d="M625 1378v32"/><path class="line" d="M800 1378v32"/>
+  <rect class="agent" x="20" y="1410" width="160" height="110" rx="16"/><text class="smallLabel" x="100" y="1450">UX</text><text class="smallCopy" x="100" y="1480">Nutzerfluss</text><text class="smallCopy" x="100" y="1500">Barrierefreiheit</text>
+  <rect class="agent" x="195" y="1410" width="160" height="110" rx="16"/><text class="smallLabel" x="275" y="1450">Architektur</text><text class="smallCopy" x="275" y="1480">Struktur</text><text class="smallCopy" x="275" y="1500">Abhängigkeiten</text>
+  <rect class="agent" x="370" y="1410" width="160" height="110" rx="16"/><text class="smallLabel" x="450" y="1450">Codequalität</text><text class="smallCopy" x="450" y="1480">Korrektheit</text><text class="smallCopy" x="450" y="1500">Wartbarkeit</text>
+  <rect class="agent" x="545" y="1410" width="160" height="110" rx="16"/><text class="smallLabel" x="625" y="1450">Security</text><text class="smallCopy" x="625" y="1480">Risiken</text><text class="smallCopy" x="625" y="1500">Datenschutz</text>
+  <rect class="agent" x="720" y="1410" width="160" height="110" rx="16"/><text class="smallLabel" x="800" y="1442">Tests +</text><text class="smallLabel" x="800" y="1463">Dokumentation</text><text class="smallCopy" x="800" y="1492">Nachweise</text><text class="smallCopy" x="800" y="1510">Aktualität</text>
+  <path class="bus" d="M100 1520v45h700v-45M275 1520v45M450 1520v45M625 1520v45"/><path class="line" d="M450 1565v35"/>
+
+  <polygon class="decision" points="450,1600 570,1660 450,1720 330,1660"/><text class="label" x="450" y="1654">Gesamtergebnis</text><text class="copy" x="450" y="1679">GO?</text>
+  <path class="line" d="M330 1660H120v-611h165"/><text class="edge" x="137" y="1642">NO-GO: BLOCKER BEHEBEN</text>
+  <path class="line" d="M450 1720v45"/><text class="edge" x="468" y="1749">GO</text>
+  <rect class="box" x="260" y="1765" width="380" height="98" rx="18"/><text class="tag" x="450" y="1793">MENSCHLICHE ENTSCHEIDUNG</text><text class="label" x="450" y="1822">Merge freigeben</text><text class="copy" x="450" y="1848">main → GitHub Pages</text>
+</svg>
