@@ -7,6 +7,15 @@
   <meta name="theme-color" content="#07111f">
   <title>AI Development is Product Ownership</title>
   <script>
+    const supportedLanguageCodes = ["de", "en", "zh", "hi", "es", "ar"];
+    const storedLanguage = localStorage.getItem("language");
+    const browserLanguage = navigator.language.toLowerCase().split("-")[0];
+    const initialLanguage = supportedLanguageCodes.includes(storedLanguage)
+      ? storedLanguage
+      : supportedLanguageCodes.includes(browserLanguage) ? browserLanguage : "de";
+    document.documentElement.lang = initialLanguage;
+    document.documentElement.dir = initialLanguage === "ar" ? "rtl" : "ltr";
+    document.documentElement.dataset.language = initialLanguage;
     if (localStorage.getItem("theme") === "gold") {
       document.documentElement.dataset.theme = "gold";
     }
@@ -454,6 +463,49 @@
       will-change: transform;
     }
 
+    .language-switcher {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      max-width: min(290px, 34vw);
+      padding: 3px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      scrollbar-width: thin;
+    }
+
+    .language-button {
+      min-width: 30px;
+      min-height: 30px;
+      padding: 3px 6px;
+      border: 0;
+      border-radius: 999px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+      font-size: .72rem;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .language-button:hover,
+    .language-button:focus-visible {
+      color: var(--ink);
+      background: var(--accent-tint);
+      outline: none;
+    }
+
+    .language-button[aria-pressed="true"] {
+      color: var(--deep);
+      background: var(--accent);
+    }
+
+    :root[dir="rtl"] .header-inner,
+    :root[dir="rtl"] .header-actions { direction: rtl; }
+
     .workflow-graphic.is-playing .workflow-canvas {
       transition: transform .7s cubic-bezier(.2, .8, .2, 1);
     }
@@ -739,7 +791,13 @@
 
     .genie-track {
       display: flex;
+      direction: ltr;
       transition: transform .3s ease;
+    }
+
+    :root[dir="rtl"] .genie-copy {
+      direction: rtl;
+      text-align: right;
     }
 
     .genie-slide {
@@ -911,6 +969,8 @@
       .mark { flex-basis: 100%; }
       .mark { font-size: .66rem; letter-spacing: .11em; }
       .header-actions { width: 100%; justify-content: space-between; gap: 6px; }
+      .language-switcher { order: 1; max-width: 42vw; }
+      .language-button { min-width: 28px; padding-inline: 5px; }
       .header-link { padding: 0 8px; font-size: .68rem; }
       .sign-in-button { padding: 0 10px; }
       .theme-toggle { padding-left: 10px; font-size: .7rem; }
@@ -933,6 +993,7 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .theme-toggle,
+      .language-button,
       .header-link,
       .sign-in-button,
       .section-navigation,
@@ -946,24 +1007,32 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a class="mark" href="#eisberg">Wassertrinker.de Case Study</a>
+      <a class="mark" href="#eisberg" data-i18n="brand">Wassertrinker.de Case Study</a>
       <div class="header-actions">
-        <a class="header-link" href="https://wassertrinker-dev.github.io/Motion-Leap/dist/">Motion Leap ansehen</a>
-        <button class="theme-toggle" id="change-style" type="button" aria-pressed="false">Change Style</button>
-        <button class="sign-in-button" type="button">Anmelden</button>
+        <a class="header-link" href="https://wassertrinker-dev.github.io/Motion-Leap/dist/" data-i18n="motionLeap">Motion Leap ansehen</a>
+        <button class="theme-toggle" id="change-style" type="button" aria-pressed="false" data-i18n="changeStyle">Change Style</button>
+        <div class="language-switcher" role="group" aria-label="Sprache wählen" data-i18n-aria-label="languagePicker">
+          <button class="language-button" type="button" data-language="de" aria-pressed="true" aria-label="Deutsch">DE</button>
+          <button class="language-button" type="button" data-language="en" aria-pressed="false" aria-label="English">EN</button>
+          <button class="language-button" type="button" data-language="zh" aria-pressed="false" aria-label="中文">中文</button>
+          <button class="language-button" type="button" data-language="hi" aria-pressed="false" aria-label="हिन्दी">हि</button>
+          <button class="language-button" type="button" data-language="es" aria-pressed="false" aria-label="Español">ES</button>
+          <button class="language-button" type="button" data-language="ar" aria-pressed="false" aria-label="العربية">ع</button>
+        </div>
+        <button class="sign-in-button" type="button" data-i18n="signIn">Anmelden</button>
       </div>
     </div>
   </header>
 
   <div class="app-shell">
     <aside class="section-navigation" id="section-navigation">
-      <button class="toc-toggle" id="toc-toggle" type="button" aria-expanded="true" aria-controls="section-links" aria-label="Inhaltsnavigation einklappen">‹</button>
-      <nav aria-label="Inhaltsnavigation">
-        <p class="toc-label">Inhalt</p>
+      <button class="toc-toggle" id="toc-toggle" type="button" aria-expanded="true" aria-controls="section-links" aria-label="Inhaltsnavigation einklappen" data-i18n-aria-label="collapseNavigation">‹</button>
+      <nav aria-label="Inhaltsnavigation" data-i18n-aria-label="contentsNavigation">
+        <p class="toc-label" data-i18n="contents">Inhalt</p>
         <ul class="section-links" id="section-links">
-          <li><a href="#eisberg" data-section-link aria-current="true">Eisberg</a></li>
-          <li><a href="#workflow" data-section-link>Workflow</a></li>
-          <li><a href="#genies" data-section-link>Tote Genies</a></li>
+          <li><a href="#eisberg" data-section-link aria-current="true" data-i18n="iceberg">Eisberg</a></li>
+          <li><a href="#workflow" data-section-link data-i18n="workflow">Workflow</a></li>
+          <li><a href="#genies" data-section-link data-i18n="genies">Tote Genies</a></li>
         </ul>
       </nav>
     </aside>
@@ -974,8 +1043,8 @@
     <section class="content-section hero" id="eisberg" data-section aria-labelledby="headline">
       <div>
         <p class="eyebrow">AI-native Product Engineering</p>
-        <h1 id="headline">Der Prompt ist <span>nur die Spitze.</span></h1>
-        <p class="lead">
+        <h1 id="headline" data-i18n-html="heroTitle">Der Prompt ist <span>nur die Spitze.</span></h1>
+        <p class="lead" data-i18n-html="heroLead">
           Ein AI Developer liefert nicht einfach Code. Er muss das Problem verstehen,
           Anforderungen schärfen, Agents koordinieren und Qualität nachweisen.
           <strong>Deshalb muss ein guter AI Developer auch wie ein Product Owner arbeiten.</strong>
@@ -985,40 +1054,40 @@
       <div class="visual">
         <div class="iceberg" role="img" aria-label="Eisbergmodell: Der sichtbare Prompt ist nur zehn Prozent. Darunter liegen Requirements, User Stories, Architektur, Delegation, Code Review, Security Audit, Testing, Deployment und Monitoring.">
           <div class="surface" aria-hidden="true"></div>
-          <div class="tip"><strong>DER PROMPT</strong></div>
+          <div class="tip"><strong data-i18n="promptLabel">DER PROMPT</strong></div>
           <div class="body">
             <ul aria-hidden="true">
-              <li>Requirements</li>
-              <li>User Stories</li>
-              <li>Architektur</li>
-              <li>Delegation</li>
-              <li>Code Review</li>
-              <li>Security Audit</li>
-              <li>Testing</li>
-              <li>Deployment</li>
-              <li>Monitoring</li>
-              <li>Dokumentation</li>
+              <li data-iceberg-term="requirements">Requirements</li>
+              <li data-iceberg-term="stories">User Stories</li>
+              <li data-iceberg-term="architecture">Architektur</li>
+              <li data-iceberg-term="delegation">Delegation</li>
+              <li data-iceberg-term="review">Code Review</li>
+              <li data-iceberg-term="security">Security Audit</li>
+              <li data-iceberg-term="testing">Testing</li>
+              <li data-iceberg-term="deployment">Deployment</li>
+              <li data-iceberg-term="monitoring">Monitoring</li>
+              <li data-iceberg-term="documentation">Dokumentation</li>
             </ul>
           </div>
         </div>
-        <p class="caption">10 % sichtbar. 90 % Produktverantwortung.</p>
+        <p class="caption" data-i18n="icebergCaption">10 % sichtbar. 90 % Produktverantwortung.</p>
       </div>
     </section>
 
     <section class="content-section workflow" id="workflow" data-section aria-labelledby="workflow-heading">
       <div class="section-heading">
-        <p class="eyebrow">So entsteht eine Änderung</p>
-        <h2 id="workflow-heading">Von der Idee zur Veröffentlichung.</h2>
-        <p>Ein nachvollziehbarer Prozess: Erst wird die Story gemeinsam geschärft, danach folgt die kontrollierte Auslieferung.</p>
+        <p class="eyebrow" data-i18n="workflowEyebrow">So entsteht eine Änderung</p>
+        <h2 id="workflow-heading" data-i18n="workflowTitle">Von der Idee zur Veröffentlichung.</h2>
+        <p data-i18n="workflowIntro">Ein nachvollziehbarer Prozess: Erst wird die Story gemeinsam geschärft, danach folgt die kontrollierte Auslieferung.</p>
       </div>
 
       <figure>
         <div class="workflow-graphic" id="workflow-graphic" tabindex="0" aria-label="Interaktives Workflow-Diagramm. Mit der Maus oder dem Finger verschieben; die Pfeiltasten verschieben das Diagramm.">
           <div class="workflow-toolbar" aria-label="Diagramm-Navigation">
-            <button class="workflow-tool workflow-mode-tool" id="workflow-animation-show" type="button" hidden>Animation ansehen</button>
-            <button class="workflow-tool" id="workflow-zoom-out" type="button" aria-label="Verkleinern">−</button>
+            <button class="workflow-tool workflow-mode-tool" id="workflow-animation-show" type="button" hidden data-i18n="watchAnimation">Animation ansehen</button>
+            <button class="workflow-tool" id="workflow-zoom-out" type="button" aria-label="Verkleinern" data-i18n-aria-label="zoomOut">−</button>
             <button class="workflow-tool" id="workflow-zoom-reset" type="button" aria-label="Ansicht einpassen">Fit</button>
-            <button class="workflow-tool" id="workflow-zoom-in" type="button" aria-label="Vergrößern">+</button>
+            <button class="workflow-tool" id="workflow-zoom-in" type="button" aria-label="Vergrößern" data-i18n-aria-label="zoomIn">+</button>
           </div>
           <div class="workflow-canvas" id="workflow-canvas">
             <img class="workflow-export" src="assets/workflow/workflow-diagram.svg" alt="Ablaufdiagramm: Ein Mensch entwickelt mit dem Story Writer Agent eine Story bis zur Freigabe. Ein Lead Agent implementiert auf dem Story-Branch. Nach Test und Pull Request prüfen fünf unabhängige Agenten gleichzeitig UX, Architektur, Codequalität, Security sowie Tests und Dokumentation. Die Ergebnisse laufen in einer gemeinsamen GO- oder NO-GO-Entscheidung zusammen. Bei NO-GO wird nachgebessert; bei GO entscheidet ein Mensch über den Merge und GitHub Pages veröffentlicht aus main.">
@@ -1026,7 +1095,7 @@
           </div>
           <section class="workflow-playback" aria-labelledby="workflow-playback-heading">
             <div class="workflow-playback-header">
-              <p class="eyebrow" id="workflow-playback-heading">Workflow erleben</p>
+              <p class="eyebrow" id="workflow-playback-heading" data-i18n="experienceWorkflow">Workflow erleben</p>
               <p class="workflow-scene-count" id="workflow-scene-count">Szene 1 von 11</p>
             </div>
             <div class="workflow-scene" aria-live="polite">
@@ -1036,9 +1105,9 @@
             </div>
             <div class="workflow-progress" aria-hidden="true"><span id="workflow-progress-bar"></span></div>
             <div class="workflow-playback-controls" aria-label="Ablaufsteuerung">
-              <button id="workflow-play" type="button">Animation starten</button>
-              <button id="workflow-reset" type="button">Zurücksetzen</button>
-              <button id="workflow-static" type="button">Diagramm ohne Animation</button>
+              <button id="workflow-play" type="button" data-i18n="startAnimation">Animation starten</button>
+              <button id="workflow-reset" type="button" data-i18n="reset">Zurücksetzen</button>
+              <button id="workflow-static" type="button" data-i18n="staticDiagram">Diagramm ohne Animation</button>
               <p class="workflow-playback-status" id="workflow-playback-status">Das aktuelle Wort wird in Sprechgeschwindigkeit hervorgehoben.</p>
             </div>
           </section>
@@ -1060,9 +1129,9 @@
 
     <section class="content-section genies" id="genies" data-section aria-labelledby="genies-heading">
       <div class="section-heading">
-        <p class="eyebrow">Tote Genies</p>
-        <h2 id="genies-heading">Sie hätten bestimmt noch einen Kommentar.</h2>
-        <p>Fiktive Zitate über die Zusammenarbeit mit Agents.</p>
+        <p class="eyebrow" data-i18n="genies">Tote Genies</p>
+        <h2 id="genies-heading" data-i18n="geniesTitle">Sie hätten bestimmt noch einen Kommentar.</h2>
+        <p data-i18n="geniesIntro">Fiktive Zitate über die Zusammenarbeit mit Agents.</p>
       </div>
 
       <div class="genie-carousel" id="genie-carousel" tabindex="0" aria-roledescription="Karussell" aria-label="Fiktive Zitate verstorbener Genies">
@@ -1076,18 +1145,129 @@
         </div>
         <p class="genie-status" id="genie-status" hidden></p>
       </div>
-      <p class="genie-disclaimer">Alle Zitate sind fiktiv und als humorvolle Hommage gemeint.</p>
+      <p class="genie-disclaimer" data-i18n="geniesDisclaimer">Alle Zitate sind fiktiv und als humorvolle Hommage gemeint.</p>
     </section>
 
       </div>
     </main>
   </div>
   <footer class="site-footer">
-      <span>Die vollständige Case Study folgt.</span>
-      <span>Built transparently with Codex and specialized agents.</span>
+      <span data-i18n="footerCaseStudy">Die vollständige Case Study folgt.</span>
+      <span data-i18n="footerBuilt">Built transparently with Codex and specialized agents.</span>
     </footer>
   <script>
     window.addEventListener("DOMContentLoaded", () => {
+    const translations = {
+      de: {
+        pageTitle: "AI Development is Product Ownership", pageDescription: "Warum AI Development weit mehr ist als Prompting: Product Ownership, Architektur, Qualität und sichere Auslieferung.",
+        brand: "Wassertrinker.de Case Study", motionLeap: "Motion Leap ansehen", changeStyle: "Style wechseln", languagePicker: "Sprache wählen", signIn: "Anmelden", contentsNavigation: "Inhaltsnavigation", contents: "Inhalt", iceberg: "Eisberg", workflow: "Workflow", genies: "Tote Genies", promptLabel: "DER PROMPT",
+        collapseNavigation: "Inhaltsnavigation einklappen", expandNavigation: "Inhaltsnavigation ausklappen", heroTitle: "Der Prompt ist <span>nur die Spitze.</span>", heroLead: "Ein AI Developer liefert nicht einfach Code. Er muss das Problem verstehen, Anforderungen schärfen, Agents koordinieren und Qualität nachweisen. <strong>Deshalb muss ein guter AI Developer auch wie ein Product Owner arbeiten.</strong>", icebergCaption: "10 % sichtbar. 90 % Produktverantwortung.",
+        workflowEyebrow: "So entsteht eine Änderung", workflowTitle: "Von der Idee zur Veröffentlichung.", workflowIntro: "Ein nachvollziehbarer Prozess: Erst wird die Story gemeinsam geschärft, danach folgt die kontrollierte Auslieferung.", watchAnimation: "Animation ansehen", zoomOut: "Verkleinern", zoomIn: "Vergrößern", experienceWorkflow: "Workflow erleben", startAnimation: "Animation starten", pauseAnimation: "Animation pausieren", reset: "Zurücksetzen", staticDiagram: "Diagramm ohne Animation",
+        geniesTitle: "Sie hätten bestimmt noch einen Kommentar.", geniesIntro: "Fiktive Zitate über die Zusammenarbeit mit Agents.", geniesDisclaimer: "Alle Zitate sind fiktiv und als humorvolle Hommage gemeint.", footerCaseStudy: "Die vollständige Case Study folgt.", footerBuilt: "Transparent gebaut mit Codex und spezialisierten Agents.", scene: "Szene",
+      },
+      en: {
+        pageTitle: "AI Development is Product Ownership", pageDescription: "Why AI development is far more than prompting: product ownership, architecture, quality, and safe delivery.",
+        brand: "Wassertrinker.de Case Study", motionLeap: "View Motion Leap", changeStyle: "Change style", languagePicker: "Choose language", signIn: "Sign in", contentsNavigation: "Contents navigation", contents: "Contents", iceberg: "Iceberg", workflow: "Workflow", genies: "Great minds", promptLabel: "THE PROMPT",
+        collapseNavigation: "Collapse contents navigation", expandNavigation: "Expand contents navigation", heroTitle: "The prompt is <span>only the tip.</span>", heroLead: "An AI developer does not simply deliver code. They need to understand the problem, refine requirements, coordinate agents, and demonstrate quality. <strong>That is why a strong AI developer also works like a product owner.</strong>", icebergCaption: "10% visible. 90% product responsibility.",
+        workflowEyebrow: "How a change comes to life", workflowTitle: "From idea to release.", workflowIntro: "A traceable process: first the story is refined together, then it is delivered in a controlled way.", watchAnimation: "View animation", zoomOut: "Zoom out", zoomIn: "Zoom in", experienceWorkflow: "Experience the workflow", startAnimation: "Start animation", pauseAnimation: "Pause animation", reset: "Reset", staticDiagram: "Diagram without animation",
+        geniesTitle: "They would surely have a comment.", geniesIntro: "Fictional quotes about collaborating with agents.", geniesDisclaimer: "All quotes are fictional and intended as a humorous homage.", footerCaseStudy: "The complete case study is coming soon.", footerBuilt: "Built transparently with Codex and specialised agents.", scene: "Scene",
+      },
+      zh: {
+        pageTitle: "AI 开发即产品负责人", pageDescription: "AI 开发远不止提示词：它需要产品责任、架构、质量与可靠交付。",
+        brand: "Wassertrinker.de 案例研究", motionLeap: "查看 Motion Leap", changeStyle: "切换风格", languagePicker: "选择语言", signIn: "登录", contentsNavigation: "内容导航", contents: "目录", iceberg: "冰山", workflow: "流程", genies: "大师们", promptLabel: "提示词",
+        collapseNavigation: "收起内容导航", expandNavigation: "展开内容导航", heroTitle: "提示词只是<span>冰山一角。</span>", heroLead: "AI 开发者并非只是交付代码。他们需要理解问题、梳理需求、协调智能体并证明质量。<strong>因此，优秀的 AI 开发者也必须像产品负责人一样工作。</strong>", icebergCaption: "10% 可见，90% 是产品责任。",
+        workflowEyebrow: "一次变更如何完成", workflowTitle: "从想法到发布。", workflowIntro: "一个可追溯的过程：先共同打磨故事，再进行受控交付。", watchAnimation: "查看动画", zoomOut: "缩小", zoomIn: "放大", experienceWorkflow: "体验流程", startAnimation: "开始动画", pauseAnimation: "暂停动画", reset: "重置", staticDiagram: "无动画图表",
+        geniesTitle: "他们一定还有话要说。", geniesIntro: "关于与智能体协作的虚构引语。", geniesDisclaimer: "所有引语均为虚构，旨在表达幽默的致敬。", footerCaseStudy: "完整案例研究即将发布。", footerBuilt: "由 Codex 和专业智能体透明构建。", scene: "场景",
+      },
+      hi: {
+        pageTitle: "AI विकास ही उत्पाद स्वामित्व है", pageDescription: "AI विकास केवल प्रॉम्प्टिंग नहीं है: इसमें उत्पाद स्वामित्व, आर्किटेक्चर, गुणवत्ता और सुरक्षित डिलीवरी शामिल हैं।",
+        brand: "Wassertrinker.de केस स्टडी", motionLeap: "Motion Leap देखें", changeStyle: "स्टाइल बदलें", languagePicker: "भाषा चुनें", signIn: "साइन इन", contentsNavigation: "सामग्री नेविगेशन", contents: "सामग्री", iceberg: "हिमशैल", workflow: "वर्कफ़्लो", genies: "महान प्रतिभाएँ", promptLabel: "प्रॉम्प्ट",
+        collapseNavigation: "सामग्री नेविगेशन समेटें", expandNavigation: "सामग्री नेविगेशन फैलाएँ", heroTitle: "प्रॉम्प्ट <span>सिर्फ़ एक छोटा हिस्सा है।</span>", heroLead: "AI डेवलपर केवल कोड नहीं देता। उसे समस्या समझनी, आवश्यकताएँ स्पष्ट करनी, एजेंटों का समन्वय करना और गुणवत्ता सिद्ध करनी होती है। <strong>इसलिए अच्छे AI डेवलपर को उत्पाद स्वामी की तरह भी काम करना होता है।</strong>", icebergCaption: "10% दिखाई देता है। 90% उत्पाद की ज़िम्मेदारी है।",
+        workflowEyebrow: "बदलाव ऐसे बनता है", workflowTitle: "विचार से रिलीज़ तक।", workflowIntro: "एक पता लगाने योग्य प्रक्रिया: पहले स्टोरी को मिलकर स्पष्ट किया जाता है, फिर उसे नियंत्रित तरीके से डिलीवर किया जाता है।", watchAnimation: "एनीमेशन देखें", zoomOut: "छोटा करें", zoomIn: "बड़ा करें", experienceWorkflow: "वर्कफ़्लो जानें", startAnimation: "एनीमेशन शुरू करें", pauseAnimation: "एनीमेशन रोकें", reset: "रीसेट", staticDiagram: "बिना एनीमेशन का डायग्राम",
+        geniesTitle: "उनकी भी एक टिप्पणी होती।", geniesIntro: "एजेंटों के साथ सहयोग पर काल्पनिक उद्धरण।", geniesDisclaimer: "सभी उद्धरण काल्पनिक हैं और हास्यपूर्ण श्रद्धांजलि के रूप में हैं।", footerCaseStudy: "पूरी केस स्टडी जल्द आएगी।", footerBuilt: "Codex और विशेषज्ञ एजेंटों के साथ पारदर्शी रूप से बनाया गया।", scene: "दृश्य",
+      },
+      es: {
+        pageTitle: "El desarrollo con IA es propiedad de producto", pageDescription: "El desarrollo con IA es mucho más que prompting: propiedad de producto, arquitectura, calidad y entrega segura.",
+        brand: "Caso de estudio Wassertrinker.de", motionLeap: "Ver Motion Leap", changeStyle: "Cambiar estilo", languagePicker: "Elegir idioma", signIn: "Iniciar sesión", contentsNavigation: "Navegación de contenidos", contents: "Contenido", iceberg: "Iceberg", workflow: "Flujo de trabajo", genies: "Grandes genios", promptLabel: "EL PROMPT",
+        collapseNavigation: "Contraer navegación de contenidos", expandNavigation: "Expandir navegación de contenidos", heroTitle: "El prompt es <span>solo la punta.</span>", heroLead: "Un desarrollador de IA no se limita a entregar código. Debe entender el problema, precisar requisitos, coordinar agentes y demostrar calidad. <strong>Por eso un buen desarrollador de IA también trabaja como product owner.</strong>", icebergCaption: "10 % visible. 90 % responsabilidad de producto.",
+        workflowEyebrow: "Así nace un cambio", workflowTitle: "De la idea al lanzamiento.", workflowIntro: "Un proceso trazable: primero se afina la historia en conjunto y después se realiza una entrega controlada.", watchAnimation: "Ver animación", zoomOut: "Alejar", zoomIn: "Acercar", experienceWorkflow: "Explorar el flujo", startAnimation: "Iniciar animación", pauseAnimation: "Pausar animación", reset: "Restablecer", staticDiagram: "Diagrama sin animación",
+        geniesTitle: "Seguro que tendrían un comentario.", geniesIntro: "Citas ficticias sobre la colaboración con agentes.", geniesDisclaimer: "Todas las citas son ficticias y pretenden ser un homenaje humorístico.", footerCaseStudy: "El caso de estudio completo llegará pronto.", footerBuilt: "Creado de forma transparente con Codex y agentes especializados.", scene: "Escena",
+      },
+      ar: {
+        pageTitle: "تطوير الذكاء الاصطناعي هو ملكية المنتج", pageDescription: "تطوير الذكاء الاصطناعي أكثر بكثير من كتابة الموجّهات: ملكية المنتج والهندسة والجودة والتسليم الآمن.",
+        brand: "دراسة حالة Wassertrinker.de", motionLeap: "عرض Motion Leap", changeStyle: "تغيير النمط", languagePicker: "اختر اللغة", signIn: "تسجيل الدخول", contentsNavigation: "تنقّل المحتوى", contents: "المحتوى", iceberg: "جبل الجليد", workflow: "سير العمل", genies: "عقول عظيمة", promptLabel: "الموجّه",
+        collapseNavigation: "طي تنقّل المحتوى", expandNavigation: "توسيع تنقّل المحتوى", heroTitle: "الموجّه هو <span>مجرد القمة.</span>", heroLead: "لا يسلّم مطوّر الذكاء الاصطناعي الشفرة فحسب. بل يفهم المشكلة ويصقل المتطلبات وينسّق الوكلاء ويثبت الجودة. <strong>لذلك يعمل مطوّر الذكاء الاصطناعي الجيد أيضاً كمالك للمنتج.</strong>", icebergCaption: "10٪ مرئي. 90٪ مسؤولية عن المنتج.",
+        workflowEyebrow: "هكذا يتكوّن التغيير", workflowTitle: "من الفكرة إلى الإصدار.", workflowIntro: "عملية قابلة للتتبع: تُصقل القصة معاً أولاً، ثم تُسلّم بصورة مضبوطة.", watchAnimation: "عرض الرسوم المتحركة", zoomOut: "تصغير", zoomIn: "تكبير", experienceWorkflow: "استكشف سير العمل", startAnimation: "بدء الرسوم المتحركة", pauseAnimation: "إيقاف الرسوم المتحركة", reset: "إعادة ضبط", staticDiagram: "مخطط بلا رسوم متحركة",
+        geniesTitle: "لا بد أن لديهم تعليقاً آخر.", geniesIntro: "اقتباسات خيالية عن التعاون مع الوكلاء.", geniesDisclaimer: "جميع الاقتباسات خيالية ومقصودة كتحية مرحة.", footerCaseStudy: "دراسة الحالة الكاملة قريباً.", footerBuilt: "بُني بشفافية باستخدام Codex ووكلاء متخصصين.", scene: "مشهد",
+      },
+    };
+    // Translation coverage rule: include static labels, interactive scenes, visual diagrams, and generated data.
+    const localizedContent = {
+      de: {
+        iceberg: ["Requirements", "User Stories", "Architektur", "Delegation", "Code Review", "Security Audit", "Testing", "Deployment", "Monitoring", "Dokumentation"],
+        scenes: ["Ein Prompt reicht nicht", "Die Idee verstehen", "Story und Kriterien schärfen", "Menschliche Freigabe", "Verbindliches Issue", "Isoliert implementieren", "Test und Pull Request", "Qualität parallel prüfen", "GO oder NO-GO", "Mensch entscheidet über Merge", "Kontrolliert veröffentlichen"],
+        quotes: ["Das ist nicht mehr relativ.", "Endlich besteht jemand meinen Test.", "Ich schrieb den ersten Algorithmus. Jetzt schreibe ich Anforderungen.", "Mein Agent schreibt, ich reviewe nur.", "To prompt or not to prompt – das ist nicht mehr die Frage.", "Endlich dirigiere ich wieder, statt selbst zu spielen.", "Ich stand auf den Schultern von Riesen. Jetzt leite ich sie.", "Ich baute den ersten Computer. Jetzt baut er für mich.", "Heute debuggen Agents.", "Meine strahlendste Entdeckung: ein Team, das nie schläft."],
+      },
+      en: {
+        iceberg: ["Requirements", "User stories", "Architecture", "Delegation", "Code review", "Security audit", "Testing", "Deployment", "Monitoring", "Documentation"],
+        scenes: ["A prompt is not enough", "Understand the idea", "Refine story and criteria", "Human approval", "A binding issue", "Implement in isolation", "Test and pull request", "Review quality in parallel", "GO or NO-GO", "A human decides the merge", "Release with control"],
+        quotes: ["This is no longer relative.", "At last, someone passes my test.", "I wrote the first algorithm. Now I write requirements.", "My agent writes; I only review.", "To prompt or not to prompt is no longer the question.", "At last I conduct again instead of playing myself.", "I stood on the shoulders of giants. Now I lead them.", "I built the first computer. Now it builds for me.", "Today, agents debug.", "My brightest discovery: a team that never sleeps."],
+      },
+      zh: {
+        iceberg: ["需求", "用户故事", "架构", "委派", "代码审查", "安全审计", "测试", "部署", "监控", "文档"],
+        scenes: ["提示词并不够", "理解想法", "打磨故事与标准", "人工批准", "正式议题", "独立实现", "测试与拉取请求", "并行审查质量", "通过还是不通过", "由人决定合并", "受控发布"],
+        quotes: ["这已经不再是相对的了。", "终于有人通过了我的测试。", "我写下第一个算法；现在我写需求。", "我的智能体写，我只审查。", "是否提示已不再是问题。", "终于我又能指挥，而不是亲自演奏。", "我曾站在巨人的肩上；如今我带领他们。", "我造了第一台计算机；如今它为我建造。", "如今智能体调试。", "我最耀眼的发现：一个从不休眠的团队。"],
+      },
+      hi: {
+        iceberg: ["आवश्यकताएँ", "यूज़र स्टोरी", "आर्किटेक्चर", "डेलीगेशन", "कोड रिव्यू", "सुरक्षा ऑडिट", "टेस्टिंग", "डिप्लॉयमेंट", "मॉनिटरिंग", "दस्तावेज़ीकरण"],
+        scenes: ["सिर्फ़ प्रॉम्प्ट काफी नहीं", "विचार समझें", "स्टोरी और मानदंड स्पष्ट करें", "मानवीय स्वीकृति", "बाध्यकारी इश्यू", "अलग से लागू करें", "टेस्ट और पुल रिक्वेस्ट", "समानांतर गुणवत्ता जाँच", "GO या NO-GO", "मनुष्य मर्ज तय करता है", "नियंत्रित रिलीज़"],
+        quotes: ["यह अब सापेक्ष नहीं रहा।", "आखिर कोई मेरा टेस्ट पास करता है।", "मैंने पहला एल्गोरिदम लिखा; अब आवश्यकताएँ लिखता हूँ।", "मेरा एजेंट लिखता है, मैं केवल रिव्यू करता हूँ।", "प्रॉम्प्ट करना है या नहीं, यह अब सवाल नहीं।", "अब मैं खुद बजाने के बजाय फिर से संचालन करता हूँ।", "मैं दिग्गजों के कंधों पर खड़ा था; अब उन्हें नेतृत्व देता हूँ।", "मैंने पहला कंप्यूटर बनाया; अब वह मेरे लिए बनाता है।", "आज एजेंट डीबग करते हैं।", "मेरी सबसे चमकदार खोज: एक टीम जो कभी नहीं सोती।"],
+      },
+      es: {
+        iceberg: ["Requisitos", "Historias de usuario", "Arquitectura", "Delegación", "Revisión de código", "Auditoría de seguridad", "Pruebas", "Despliegue", "Monitorización", "Documentación"],
+        scenes: ["Un prompt no basta", "Entender la idea", "Afinar historia y criterios", "Aprobación humana", "Issue vinculante", "Implementar de forma aislada", "Pruebas y pull request", "Revisar calidad en paralelo", "GO o NO-GO", "La persona decide el merge", "Publicar con control"],
+        quotes: ["Esto ya no es relativo.", "Por fin alguien pasa mi prueba.", "Escribí el primer algoritmo; ahora escribo requisitos.", "Mi agente escribe; yo solo reviso.", "Ya no se trata de hacer prompting o no.", "Por fin vuelvo a dirigir en vez de tocar yo mismo.", "Me apoyé en hombros de gigantes; ahora los dirijo.", "Construí el primer ordenador; ahora él construye para mí.", "Hoy los agentes depuran.", "Mi descubrimiento más brillante: un equipo que nunca duerme."],
+      },
+      ar: {
+        iceberg: ["المتطلبات", "قصص المستخدم", "الهندسة", "التفويض", "مراجعة الشفرة", "تدقيق الأمان", "الاختبار", "النشر", "المراقبة", "التوثيق"],
+        scenes: ["الموجّه وحده لا يكفي", "فهم الفكرة", "صقل القصة والمعايير", "موافقة بشرية", "مشكلة ملزمة", "تنفيذ معزول", "اختبار وطلب سحب", "فحص الجودة بالتوازي", "GO أم NO-GO", "الإنسان يقرر الدمج", "نشر مضبوط"],
+        quotes: ["لم يعد الأمر نسبياً.", "أخيراً ينجح أحد في اختباري.", "كتبت أول خوارزمية؛ والآن أكتب المتطلبات.", "وكيلي يكتب وأنا أراجع فقط.", "لم يعد السؤال: نكتب موجّهاً أم لا.", "أخيراً أقود الأوركسترا بدلاً من العزف بنفسي.", "وقفت على أكتاف العمالقة؛ والآن أقودهم.", "بنيت أول حاسوب؛ والآن يبني لي.", "اليوم يقوم الوكلاء بالتنقيح.", "اكتشافي الأكثر إشراقاً: فريق لا ينام أبداً."],
+      },
+    };
+    const workflowDiagramLabels = {
+      en: [
+        "NOT YET", "ANOTHER STORY", "HUMAN", "Idea or need", "STORY WRITER AGENT", "Discuss idea", "Questions and refinement", "DRAFT", "Story + acceptance criteria", "Show complete draft for review", "Story", "approved?", "YES", "GITHUB", "Issue is created", "binding user story", "Next", "step?", "IMPLEMENTATION", "LEAD AGENT · ONE WRITING AGENT", "Implementation", "isolated on the story branch", "QUALITY", "Test + essential docs", "Prepare result for approval", "PULL REQUEST", "Change for review", "linked to the story", "MERGE-GATE COORDINATION", "5 agents review in parallel", "UX", "User flow", "Accessibility", "Architecture", "Structure", "Dependencies", "Code quality", "Correctness", "Maintainability", "Security", "Risks", "Privacy", "Tests +", "Documentation", "Evidence", "Current state", "Overall result", "GO?", "NO-GO: FIX BLOCKERS", "GO", "HUMAN DECISION", "Approve merge", "main → GitHub Pages",
+      ],
+      zh: [
+        "尚未", "另一故事", "人", "想法或需求", "故事编写智能体", "讨论想法", "提问并深入澄清", "草案", "故事与验收标准", "展示完整草案供审查", "故事", "已批准？", "是", "GITHUB", "创建议题", "具有约束力的用户故事", "下一", "步骤？", "实施", "主智能体 · 单一写入者", "实施", "在故事分支中隔离进行", "质量", "测试与必要文档", "准备结果供验收", "拉取请求", "提交变更供审查", "关联用户故事", "合并门协调", "5 个智能体并行审查", "用户体验", "用户流程", "无障碍", "架构", "结构", "依赖", "代码质量", "正确性", "可维护性", "安全", "风险", "隐私", "测试与", "文档", "证据", "最新状态", "总体结果", "通过？", "不通过：修复阻碍", "通过", "人工决策", "批准合并", "main → GitHub Pages",
+      ],
+      hi: [
+        "अभी नहीं", "एक और स्टोरी", "मनुष्य", "विचार या आवश्यकता", "स्टोरी राइटर एजेंट", "विचार पर चर्चा", "प्रश्न और स्पष्टता", "मसौदा", "स्टोरी + स्वीकृति मानदंड", "पूरा मसौदा समीक्षा हेतु दिखाएँ", "स्टोरी", "स्वीकृत?", "हाँ", "GITHUB", "इश्यू बनाया जाता है", "बाध्यकारी यूज़र स्टोरी", "अगला", "कदम?", "कार्यान्वयन", "लीड एजेंट · एक लिखने वाला एजेंट", "कार्यान्वयन", "स्टोरी ब्रांच पर अलग", "गुणवत्ता", "टेस्ट + आवश्यक दस्तावेज़", "परिणाम स्वीकृति हेतु तैयार", "पुल रिक्वेस्ट", "बदलाव समीक्षा हेतु", "स्टोरी से जुड़ा", "मर्ज-गेट समन्वय", "5 एजेंट समानांतर जाँचते हैं", "UX", "उपयोगकर्ता प्रवाह", "सुलभता", "आर्किटेक्चर", "संरचना", "निर्भरताएँ", "कोड गुणवत्ता", "शुद्धता", "रखरखाव", "सुरक्षा", "जोखिम", "डेटा सुरक्षा", "टेस्ट +", "दस्तावेज़", "प्रमाण", "अद्यतन स्थिति", "कुल परिणाम", "GO?", "NO-GO: बाधाएँ सुधारें", "GO", "मानवीय निर्णय", "मर्ज स्वीकृत करें", "main → GitHub Pages",
+      ],
+      es: [
+        "AÚN NO", "OTRA HISTORIA", "PERSONA", "Idea o necesidad", "AGENTE STORY WRITER", "Conversar la idea", "Preguntas y definición", "BORRADOR", "Historia + criterios de aceptación", "Mostrar borrador completo", "Historia", "¿aprobada?", "SÍ", "GITHUB", "Se crea el issue", "historia de usuario vinculante", "Siguiente", "paso?", "IMPLEMENTACIÓN", "AGENTE LÍDER · UN AGENTE ESCRIBE", "Implementación", "aislada en la rama de historia", "CALIDAD", "Pruebas + documentación necesaria", "Preparar resultado para aprobación", "PULL REQUEST", "Cambio para revisión", "vinculado con la historia", "COORDINACIÓN DEL MERGE GATE", "5 agentes revisan en paralelo", "UX", "Flujo de usuario", "Accesibilidad", "Arquitectura", "Estructura", "Dependencias", "Calidad del código", "Corrección", "Mantenibilidad", "Seguridad", "Riesgos", "Privacidad", "Pruebas +", "Documentación", "Evidencias", "Actualidad", "Resultado global", "¿GO?", "NO-GO: CORREGIR BLOQUEOS", "GO", "DECISIÓN HUMANA", "Aprobar merge", "main → GitHub Pages",
+      ],
+      ar: [
+        "ليس بعد", "قصة أخرى", "الإنسان", "فكرة أو حاجة", "وكيل كتابة القصة", "مناقشة الفكرة", "أسئلة وصقل", "مسودة", "القصة + معايير القبول", "عرض المسودة كاملة للمراجعة", "القصة", "معتمدة؟", "نعم", "GITHUB", "إنشاء المشكلة", "قصة مستخدم ملزمة", "الخطوة", "التالية؟", "التنفيذ", "الوكيل القائد · وكيل كاتب واحد", "التنفيذ", "بمعزل في فرع القصة", "الجودة", "اختبار + توثيق ضروري", "إعداد النتيجة للاعتماد", "طلب سحب", "التغيير للمراجعة", "مرتبط بالقصة", "تنسيق بوابة الدمج", "5 وكلاء يراجعون بالتوازي", "UX", "تدفق المستخدم", "إتاحة الوصول", "الهندسة", "البنية", "التبعيات", "جودة الشفرة", "الصحة", "قابلية الصيانة", "الأمان", "المخاطر", "الخصوصية", "الاختبارات +", "التوثيق", "الأدلة", "الحالة الحالية", "النتيجة الإجمالية", "GO؟", "NO-GO: إصلاح العوائق", "GO", "قرار بشري", "اعتماد الدمج", "main → GitHub Pages",
+      ],
+    };
+    let activeLanguage = document.documentElement.dataset.language || "de";
+    const translate = (key) => translations[activeLanguage]?.[key] || translations.de[key] || key;
+    const applyStaticTranslations = () => {
+      document.title = translate("pageTitle");
+      document.querySelector('meta[name="description"]').setAttribute("content", translate("pageDescription"));
+      document.querySelectorAll("[data-i18n]").forEach((element) => { element.textContent = translate(element.dataset.i18n); });
+      document.querySelectorAll("[data-i18n-html]").forEach((element) => { element.innerHTML = translate(element.dataset.i18nHtml); });
+      document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => { element.setAttribute("aria-label", translate(element.dataset.i18nAriaLabel)); });
+      document.documentElement.lang = activeLanguage;
+      document.documentElement.dir = activeLanguage === "ar" ? "rtl" : "ltr";
+      document.documentElement.dataset.language = activeLanguage;
+      document.querySelectorAll("[data-language]").forEach((button) => {
+        const isActive = button.dataset.language === activeLanguage;
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+    };
+
     const styleToggle = document.getElementById("change-style");
     styleToggle.setAttribute("aria-pressed", document.documentElement.dataset.theme === "gold");
 
@@ -1123,6 +1303,7 @@
     const renderGenie = () => {
       track.replaceChildren();
       dots.replaceChildren();
+      const quotes = (localizedContent[activeLanguage] || localizedContent.de).quotes;
 
       genies.forEach((genie, index) => {
         const slide = createElement("article", "genie-slide");
@@ -1135,7 +1316,7 @@
 
         const copy = createElement("div", "genie-copy");
         const meta = createElement("p", "genie-meta", genie.jahre);
-        const quote = createElement("blockquote", "", `„${genie.zitat}“`);
+        const quote = createElement("blockquote", "", `„${quotes[index] || genie.zitat}“`);
         const citation = createElement("cite", "", genie.name);
         copy.append(meta, quote, citation);
         slide.append(portrait, copy);
@@ -1149,6 +1330,13 @@
       });
 
       showGenie(0, true);
+    };
+
+    const updateGenieTranslations = () => {
+      const quotes = (localizedContent[activeLanguage] || localizedContent.de).quotes;
+      track.querySelectorAll("blockquote").forEach((quote, index) => {
+        quote.textContent = `„${quotes[index] || genies[index]?.zitat || ""}“`;
+      });
     };
 
     const showGenie = (index, immediate = false) => {
@@ -1221,7 +1409,7 @@
         }
       });
       tocToggle.setAttribute("aria-expanded", String(expanded));
-      tocToggle.setAttribute("aria-label", expanded ? "Inhaltsnavigation einklappen" : "Inhaltsnavigation ausklappen");
+      tocToggle.setAttribute("aria-label", translate(expanded ? "collapseNavigation" : "expandNavigation"));
       tocToggle.textContent = expanded ? "‹" : "›";
     };
 
@@ -1264,7 +1452,7 @@
       });
     });
 
-    const workflowScenes = [
+    let workflowScenes = [
       ["AI Coding ist kein Prompt.", "Ein Prompt reicht nicht", "Echte Software entsteht nicht in einem einzigen Satz. Sie braucht einen nachvollziehbaren Workflow.", 8],
       ["Schritt 1: Idee klären", "Der Mensch startet mit einer Idee", "Alles beginnt mit einer Idee oder einem Bedarf. Vor dem Code wird geklärt, was gebaut werden soll und warum.", 8],
       ["Schritt 2: Story + Akzeptanzkriterien", "Story Writer Agent", "Der Story Writer Agent bespricht die Idee, stellt Rückfragen und formt daraus eine prüfbare Story.", 12],
@@ -1277,6 +1465,54 @@
       ["Schritt 9: Menschliche Merge-Freigabe", "Der Mensch entscheidet", "Der Mensch gibt den Merge frei. Erst dann geht die Änderung nach main und zu GitHub Pages.", 12],
       ["AI Coding ist ein Workflow.", "Kontrolliert veröffentlichen", "Verstehen, klären, umsetzen, prüfen, entscheiden: So wird aus einer Idee nachvollziehbare Software.", 10],
     ];
+    const workflowDurations = workflowScenes.map((scene) => scene[3]);
+    const workflowSvg = document.querySelector(".workflow-export");
+    const workflowSvgSource = "assets/workflow/workflow-diagram.svg";
+    let workflowSvgMarkupPromise = null;
+    let workflowSvgObjectUrl = null;
+    let workflowSvgRequest = 0;
+    const loadWorkflowSvgMarkup = () => {
+      workflowSvgMarkupPromise ||= fetch(workflowSvgSource).then((response) => {
+        if (!response.ok) throw new Error("Workflow diagram could not be loaded");
+        return response.text();
+      });
+      return workflowSvgMarkupPromise;
+    };
+    const renderLocalizedWorkflowDiagram = async () => {
+      const requestedLanguage = activeLanguage;
+      const request = ++workflowSvgRequest;
+      workflowSvg.alt = `${translate("workflowTitle")} ${translate("workflowIntro")}`;
+      if (requestedLanguage === "de") {
+        if (workflowSvgObjectUrl) URL.revokeObjectURL(workflowSvgObjectUrl);
+        workflowSvgObjectUrl = null;
+        workflowSvg.src = workflowSvgSource;
+        return;
+      }
+      try {
+        const markup = await loadWorkflowSvgMarkup();
+        if (request !== workflowSvgRequest || requestedLanguage !== activeLanguage) return;
+        const documentNode = new DOMParser().parseFromString(markup, "image/svg+xml");
+        const textNodes = [...documentNode.querySelectorAll("text")];
+        const labels = workflowDiagramLabels[requestedLanguage];
+        if (!labels || labels.length !== textNodes.length) throw new Error("Incomplete workflow diagram translation");
+        textNodes.forEach((node, index) => { node.textContent = labels[index]; });
+        documentNode.documentElement.setAttribute("lang", requestedLanguage);
+        documentNode.querySelector("title").textContent = translate("workflowTitle");
+        documentNode.querySelector("desc").textContent = translate("workflowIntro");
+        const localizedMarkup = new XMLSerializer().serializeToString(documentNode);
+        if (workflowSvgObjectUrl) URL.revokeObjectURL(workflowSvgObjectUrl);
+        workflowSvgObjectUrl = URL.createObjectURL(new Blob([localizedMarkup], { type: "image/svg+xml" }));
+        workflowSvg.src = workflowSvgObjectUrl;
+      } catch (error) {
+        workflowSvg.src = workflowSvgSource;
+      }
+    };
+    const applyComponentTranslations = () => {
+      const content = localizedContent[activeLanguage] || localizedContent.de;
+      document.querySelectorAll("[data-iceberg-term]").forEach((item, index) => { item.textContent = content.iceberg[index]; });
+      workflowScenes = content.scenes.map((scene, index) => [`${translate("scene")} ${index + 1}`, scene, scene, workflowDurations[index]]);
+      renderLocalizedWorkflowDiagram();
+    };
     const workflowPlay = document.getElementById("workflow-play");
     const workflowReset = document.getElementById("workflow-reset");
     const workflowStatic = document.getElementById("workflow-static");
@@ -1313,7 +1549,7 @@
         span.setAttribute("aria-hidden", "true");
         return span;
       }));
-      workflowSceneCount.textContent = `Szene ${workflowSceneIndex + 1} von ${workflowScenes.length}`;
+      workflowSceneCount.textContent = `${translate("scene")} ${workflowSceneIndex + 1} / ${workflowScenes.length}`;
       workflowProgressBar.style.width = `${((workflowSceneIndex + 1) / workflowScenes.length) * 100}%`;
       const [x, y, width, height] = workflowHighlightFrames[workflowSceneIndex];
       workflowHighlight.hidden = workflowSceneIndex === workflowScenes.length - 1;
@@ -1326,7 +1562,7 @@
       workflowPlaybackTimer = null;
       workflowWordTimer = null;
       workflowPlaying = false;
-      workflowPlay.textContent = "Animation starten";
+      workflowPlay.textContent = translate("startAnimation");
       workflowGraphic.classList.remove("is-playing");
     };
 
@@ -1364,7 +1600,7 @@
     const startWorkflowPlayback = () => {
       if (reducedMotion.matches || workflowPlaying) return;
       workflowPlaying = true;
-      workflowPlay.textContent = "Animation pausieren";
+      workflowPlay.textContent = translate("pauseAnimation");
       workflowPlaybackStatus.textContent = "Animation läuft. Der Text wechselt in Sprechgeschwindigkeit.";
       playWorkflowScene();
     };
@@ -1525,6 +1761,8 @@
 
     window.addEventListener("resize", resetWorkflowView);
     resetWorkflowView();
+    applyStaticTranslations();
+    applyComponentTranslations();
     renderWorkflowScene();
 
     const workflowObserver = new IntersectionObserver((entries) => {
@@ -1543,12 +1781,21 @@
         if (!response.ok) throw new Error("Genie data could not be loaded");
         return response.json();
       } catch (error) {
-        if (window.location.protocol === "file:" && localGenieData) {
-          return JSON.parse(localGenieData.textContent);
-        }
+        if (localGenieData) return JSON.parse(localGenieData.textContent);
         throw error;
       }
     };
+
+    document.querySelectorAll("[data-language]").forEach((button) => {
+      button.addEventListener("click", () => {
+        activeLanguage = button.dataset.language;
+        localStorage.setItem("language", activeLanguage);
+        applyStaticTranslations();
+        applyComponentTranslations();
+        renderWorkflowScene();
+        if (genies.length) updateGenieTranslations();
+      });
+    });
 
     loadGenies()
       .then((data) => {
