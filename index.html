@@ -529,6 +529,26 @@
       transition: left .45s ease, top .45s ease, width .45s ease, height .45s ease;
     }
 
+    .workflow-avatar {
+      position: absolute;
+      z-index: 5;
+      top: 16px;
+      left: 16px;
+      width: clamp(96px, 16vw, 160px);
+      overflow: hidden;
+      border: 1px solid var(--accent-hover);
+      border-radius: 14px;
+      background: #000;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, .42);
+      pointer-events: none;
+    }
+
+    .workflow-avatar video {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
     .workflow-toolbar {
       position: absolute;
       z-index: 4;
@@ -565,7 +585,8 @@
     .workflow-mode-tool { white-space: nowrap; }
 
     .workflow-graphic.is-static .workflow-playback,
-    .workflow-graphic.is-static .workflow-highlight { display: none; }
+    .workflow-graphic.is-static .workflow-highlight,
+    .workflow-graphic.is-static .workflow-avatar { display: none; }
 
     .workflow-graphic.is-static .workflow-canvas { transition: none; }
 
@@ -983,6 +1004,7 @@
       .workflow-playback { right: 8px; bottom: 8px; left: 8px; padding: 10px; }
       .workflow-scene { min-height: 100px; padding: 10px 12px; }
       .workflow-playback-status { display: none; }
+      .workflow-avatar { top: 8px; left: 8px; width: 88px; border-radius: 10px; }
       .genie-slide { grid-template-columns: 1fr; }
       .genie-portrait { max-height: 300px; }
       .content { width: min(100% - 28px, 1120px); padding: 24px 0; }
@@ -1092,6 +1114,9 @@
           <div class="workflow-canvas" id="workflow-canvas">
             <img class="workflow-export" src="assets/workflow/workflow-diagram.svg" alt="Ablaufdiagramm: Ein Mensch entwickelt mit dem Story Writer Agent eine Story bis zur Freigabe. Ein Lead Agent implementiert auf dem Story-Branch. Nach Test und Pull Request prüfen fünf unabhängige Agenten gleichzeitig UX, Architektur, Codequalität, Security sowie Tests und Dokumentation. Die Ergebnisse laufen in einer gemeinsamen GO- oder NO-GO-Entscheidung zusammen. Bei NO-GO wird nachgebessert; bei GO entscheidet ein Mensch über den Merge und GitHub Pages veröffentlicht aus main.">
             <div class="workflow-highlight" id="workflow-highlight" aria-hidden="true"></div>
+          </div>
+          <div class="workflow-avatar" id="workflow-avatar" hidden aria-hidden="true">
+            <video id="workflow-avatar-video" playsinline preload="metadata" src="assets/talking_head/talking_head.mp4"></video>
           </div>
           <section class="workflow-playback" aria-labelledby="workflow-playback-heading">
             <div class="workflow-playback-header">
@@ -1531,6 +1556,8 @@
     const workflowSceneText = document.getElementById("workflow-scene-text");
     const workflowProgressBar = document.getElementById("workflow-progress-bar");
     const workflowPlaybackStatus = document.getElementById("workflow-playback-status");
+    const workflowAvatar = document.getElementById("workflow-avatar");
+    const workflowAvatarVideo = document.getElementById("workflow-avatar-video");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let workflowSceneIndex = 0;
     let workflowPlaybackTimer = null;
@@ -1562,9 +1589,27 @@
       Object.assign(workflowHighlight.style, { left: `${x}px`, top: `${y}px`, width: `${width}px`, height: `${height}px` });
     };
 
+    const stopWorkflowAvatar = () => {
+      workflowAvatarVideo.pause();
+      workflowAvatarVideo.currentTime = 0;
+      workflowAvatar.hidden = true;
+    };
+
+    const playWorkflowAvatar = () => {
+      workflowAvatar.hidden = false;
+      workflowAvatarVideo.currentTime = 0;
+      workflowAvatarVideo.play().catch(() => {
+        workflowAvatar.hidden = true;
+        workflowPlaybackStatus.textContent = "Der Avatar benötigt eine direkte Wiedergabe-Freigabe des Browsers.";
+      });
+    };
+
+    workflowAvatarVideo.addEventListener("ended", () => { workflowAvatar.hidden = true; });
+
     const stopWorkflowPlayback = () => {
       window.clearTimeout(workflowPlaybackTimer);
       window.clearInterval(workflowWordTimer);
+      stopWorkflowAvatar();
       workflowPlaybackTimer = null;
       workflowWordTimer = null;
       workflowPlaying = false;
@@ -1608,6 +1653,7 @@
       workflowPlaying = true;
       workflowPlay.textContent = translate("pauseAnimation");
       workflowPlaybackStatus.textContent = "Animation läuft. Der Text wechselt in Sprechgeschwindigkeit.";
+      playWorkflowAvatar();
       playWorkflowScene();
     };
 
