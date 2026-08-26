@@ -58,6 +58,7 @@ if ([string]::IsNullOrWhiteSpace($SourceDescription) -or [string]::IsNullOrWhite
 
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
 $manifestRows = [System.Collections.Generic.List[string]]::new()
+$sourceHashRows = [System.Collections.Generic.List[string]]::new()
 $fontPath = "C\:/Windows/Fonts/arialbd.ttf"
 $watermarkFilter = "drawtext=fontfile='$fontPath':text='AI':fontcolor=white:fontsize=28:box=1:boxcolor=black@0.68:boxborderw=8:x=w-text_w-20:y=h-text_h-20"
 
@@ -73,6 +74,7 @@ foreach ($inputFile in $inputFiles) {
   $inputInfo = Get-MediaInfo -Path $inputFile
   $outputInfo = Get-MediaInfo -Path $outputFile
   $outputVideo = $outputInfo.streams | Where-Object { $_.codec_type -eq "video" } | Select-Object -First 1
+  $sourceHash = (Get-FileHash -LiteralPath $inputFile -Algorithm SHA256).Hash
   $sourceSize = [int64]$inputInfo.format.size
   $outputSize = [int64]$outputInfo.format.size
   $duration = [math]::Round([double]$outputInfo.format.duration, 3)
@@ -83,6 +85,7 @@ foreach ($inputFile in $inputFiles) {
   }
 
   $manifestRows.Add("| $OutputDirectory/$fileName | $duration s | $($outputVideo.width)x$($outputVideo.height) | H.264/AAC MP4 | $sourceSize B -> $outputSize B ($sizeChange% smaller) | $SourceDescription | $UsageRights | AI generated or AI modified | AI burned in at bottom right | Planned for on-demand scene loading in #26 |")
+  $sourceHashRows.Add("| $fileName | $sourceHash |")
 }
 
 $manifestPath = Join-Path (Resolve-Path $InputDirectory) "MEDIA_MANIFEST.md"
@@ -94,6 +97,16 @@ $manifest = @(
   "## AI transparency assessment",
   "",
   "These clips are realistic AI-generated depictions based on the project owner's own face. A realistic synthetic talking head may be mistaken for an authentic recording. A visible AI label is therefore used as a transparency measure under Article 50 of the EU AI Act. The white AI label on a black background is permanently burned into the lower-right corner of every clip and is visible at first perception.",
+  "",
+  "## Source archive and reproduction",
+  "",
+  "The unprocessed source videos are retained in a restricted local archive controlled by the project owner and are intentionally excluded from the published repository and GitHub Pages. To reproduce this batch, request the source archive from the project owner, verify the SHA-256 checksums below, place the files as assets/talking_head/shot1.mp4 through shot11.mp4, and run this script with the documented source and rights parameters.",
+  "",
+  "| Source file | SHA-256 |",
+  "| --- | --- |"
+) + $sourceHashRows + @(
+  "",
+  "## Final assets",
   "",
   "| Final asset path | Duration | Dimensions | Format | Optimization | Source | Usage rights | AI status | Label | Planned loading behavior |",
   "| --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |"
