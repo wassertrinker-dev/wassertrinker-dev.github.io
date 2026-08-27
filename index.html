@@ -1290,7 +1290,7 @@
       document.documentElement.lang = activeLanguage;
       document.documentElement.dir = activeLanguage === "ar" ? "rtl" : "ltr";
       document.documentElement.dataset.language = activeLanguage;
-      document.querySelectorAll("[data-language]").forEach((button) => {
+      document.querySelectorAll(".language-button[data-language]").forEach((button) => {
         const isActive = button.dataset.language === activeLanguage;
         button.setAttribute("aria-pressed", String(isActive));
       });
@@ -1930,7 +1930,7 @@
       }
     };
 
-    document.querySelectorAll("[data-language]").forEach((button) => {
+    document.querySelectorAll(".language-button[data-language]").forEach((button) => {
       button.addEventListener("click", () => {
         stopWorkflowPlayback();
         activeLanguage = button.dataset.language;
