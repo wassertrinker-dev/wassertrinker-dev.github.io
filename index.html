@@ -455,6 +455,122 @@
       outline-offset: 3px;
     }
 
+    .workflow-mode-chooser {
+      position: absolute;
+      z-index: 6;
+      inset: 0;
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      padding: 72px 24px 28px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--deep) 88%, transparent), color-mix(in srgb, var(--deep) 72%, transparent));
+      cursor: default;
+      user-select: text;
+    }
+
+    .workflow-mode-chooser[hidden] { display: none; }
+
+    .workflow-mode-chooser > p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .workflow-mode-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 280px));
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .workflow-mode-choice {
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+      padding: 10px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      color: var(--ink);
+      background: color-mix(in srgb, var(--deep) 80%, transparent);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, .3);
+      cursor: pointer;
+      font: inherit;
+      text-align: left;
+      transition: transform .18s ease, border-color .18s ease, background-color .18s ease;
+    }
+
+    .workflow-mode-choice:hover,
+    .workflow-mode-choice:focus-visible {
+      border-color: var(--accent-hover);
+      background: var(--accent-fade);
+      outline: none;
+      transform: translateY(-3px);
+    }
+
+    .workflow-mode-preview {
+      position: relative;
+      display: grid;
+      min-height: 172px;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #050a13;
+      place-items: center;
+    }
+
+    .workflow-mode-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .workflow-mode-poster img { object-position: center top; }
+    .workflow-mode-diagram img { object-position: center top; }
+
+    .workflow-poster-ai-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 7px;
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(0, 0, 0, .88);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      line-height: 1;
+    }
+
+    .workflow-play-icon {
+      position: absolute;
+      display: grid;
+      width: 64px;
+      height: 64px;
+      padding-left: 4px;
+      border: 2px solid rgba(255, 255, 255, .9);
+      border-radius: 50%;
+      color: #fff;
+      background: rgba(0, 0, 0, .5);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .5);
+      font-size: 1.8rem;
+      line-height: 1;
+      place-items: center;
+    }
+
+    .workflow-mode-copy {
+      display: grid;
+      gap: 4px;
+      padding: 1px 4px 4px;
+    }
+
+    .workflow-mode-copy strong { font-size: .98rem; }
+    .workflow-mode-copy span { color: var(--muted); font-size: .78rem; line-height: 1.4; }
+
     .workflow-canvas {
       position: absolute;
       top: 50%;
@@ -1021,6 +1137,11 @@
       .body ul { grid-template-columns: 1fr; gap: 9px; }
       .body li { font-size: .88rem; }
       .workflow-graphic { height: 68vh; min-height: 380px; }
+      .workflow-mode-chooser { align-content: start; padding: 68px 16px 16px; overflow-y: auto; }
+      .workflow-mode-options { grid-template-columns: minmax(0, 360px); }
+      .workflow-mode-choice { grid-template-columns: 112px minmax(0, 1fr); align-items: center; }
+      .workflow-mode-preview { min-height: 118px; }
+      .workflow-play-icon { width: 46px; height: 46px; font-size: 1.25rem; }
       .workflow-toolbar { top: 10px; right: 10px; }
       .workflow-avatar { top: 10px; left: 10px; width: 94px; border-radius: 12px; }
       .workflow-ai-label { top: 16px; left: 16px; }
@@ -1127,7 +1248,32 @@
 
       <figure>
         <div class="workflow-graphic" id="workflow-graphic" tabindex="0" aria-label="Interaktives Workflow-Diagramm. Mit der Maus oder dem Finger verschieben; die Pfeiltasten verschieben das Diagramm.">
-          <div class="workflow-toolbar" aria-label="Diagramm-Navigation">
+          <section class="workflow-mode-chooser" id="workflow-mode-chooser" aria-labelledby="workflow-mode-chooser-heading">
+            <p id="workflow-mode-chooser-heading">Workflow auswählen</p>
+            <div class="workflow-mode-options">
+              <button class="workflow-mode-choice" id="workflow-animation-choice" type="button">
+                <span class="workflow-mode-preview workflow-mode-poster">
+                  <img src="assets/talking_head/processed/shot1-poster.jpg" alt="">
+                  <span class="workflow-poster-ai-label">KI-generiert</span>
+                  <span class="workflow-play-icon" aria-hidden="true">▶</span>
+                </span>
+                <span class="workflow-mode-copy">
+                  <strong>Workflow erklären lassen</strong>
+                  <span>Animation mit Talking Head und Ton</span>
+                </span>
+              </button>
+              <button class="workflow-mode-choice" id="workflow-diagram-choice" type="button">
+                <span class="workflow-mode-preview workflow-mode-diagram">
+                  <img src="assets/workflow/workflow-diagram.svg" alt="">
+                </span>
+                <span class="workflow-mode-copy">
+                  <strong>Nur Diagramm</strong>
+                  <span>Den gesamten Ablauf selbst erkunden</span>
+                </span>
+              </button>
+            </div>
+          </section>
+          <div class="workflow-toolbar" id="workflow-toolbar" aria-label="Diagramm-Navigation" hidden>
             <button class="workflow-tool workflow-mode-tool" id="workflow-animation-show" type="button" hidden data-i18n="watchAnimation">Animation ansehen</button>
             <button class="workflow-tool" id="workflow-zoom-out" type="button" aria-label="Verkleinern" data-i18n-aria-label="zoomOut">−</button>
             <button class="workflow-tool" id="workflow-zoom-reset" type="button" aria-label="Ansicht einpassen">Fit</button>
@@ -1139,7 +1285,7 @@
             <img class="workflow-export" src="assets/workflow/workflow-diagram.svg" alt="Ablaufdiagramm: Ein Mensch entwickelt mit dem Story Writer Agent eine Story bis zur Freigabe. Ein Lead Agent implementiert auf dem Story-Branch. Nach Test und Pull Request prüfen fünf unabhängige Agenten gleichzeitig UX, Architektur, Codequalität, Security sowie Tests und Dokumentation. Die Ergebnisse laufen in einer gemeinsamen GO- oder NO-GO-Entscheidung zusammen. Bei NO-GO wird nachgebessert; bei GO entscheidet ein Mensch über den Merge und GitHub Pages veröffentlicht aus main.">
             <div class="workflow-highlight" id="workflow-highlight" aria-hidden="true"></div>
           </div>
-          <section class="workflow-playback" aria-labelledby="workflow-playback-heading">
+          <section class="workflow-playback" id="workflow-playback" aria-labelledby="workflow-playback-heading" hidden>
             <div class="workflow-playback-header">
               <p class="eyebrow" id="workflow-playback-heading" data-i18n="experienceWorkflow">Workflow erleben</p>
               <p class="workflow-scene-count" id="workflow-scene-count">Szene 1 von 11</p>
@@ -1154,7 +1300,7 @@
               <button id="workflow-play" type="button" data-i18n="startAnimation">Animation starten</button>
               <button id="workflow-reset" type="button" data-i18n="reset">Zurücksetzen</button>
               <button id="workflow-static" type="button" data-i18n="staticDiagram">Diagramm ohne Animation</button>
-              <p class="workflow-playback-status" id="workflow-playback-status">Animation und Ton starten nach Auswahl von „Animation starten“.</p>
+              <p class="workflow-playback-status" id="workflow-playback-status">Animation und Ton starten nach Auswahl der Animation.</p>
             </div>
           </section>
         </div>
@@ -1569,6 +1715,11 @@
     const workflowReset = document.getElementById("workflow-reset");
     const workflowStatic = document.getElementById("workflow-static");
     const workflowAnimationShow = document.getElementById("workflow-animation-show");
+    const workflowModeChooser = document.getElementById("workflow-mode-chooser");
+    const workflowAnimationChoice = document.getElementById("workflow-animation-choice");
+    const workflowDiagramChoice = document.getElementById("workflow-diagram-choice");
+    const workflowToolbar = document.getElementById("workflow-toolbar");
+    const workflowPlayback = document.getElementById("workflow-playback");
     const workflowGraphic = document.getElementById("workflow-graphic");
     const workflowHighlight = document.getElementById("workflow-highlight");
     const workflowSceneCount = document.getElementById("workflow-scene-count");
@@ -1589,6 +1740,7 @@
     let workflowSceneRemainingMs = 0;
     let workflowSceneStartedAt = 0;
     let workflowMediaFailed = false;
+    let workflowModeChosen = false;
     const workflowHighlightFrames = [
       [285, 38, 330, 80], [285, 38, 330, 80], [285, 160, 330, 222], [330, 420, 240, 120],
       [285, 582, 330, 90], [285, 872, 330, 90], [285, 1004, 330, 222], [20, 1260, 860, 260],
@@ -1836,8 +1988,17 @@
       renderWorkflowView();
     };
 
+    const syncWorkflowModeChooser = () => {
+      const showChooser = activeLanguage === "de" && !workflowModeChosen;
+      workflowModeChooser.hidden = !showChooser;
+      workflowToolbar.hidden = showChooser;
+      workflowPlayback.hidden = showChooser;
+    };
+
     const showStaticWorkflow = () => {
       stopWorkflowPlayback();
+      workflowModeChosen = true;
+      syncWorkflowModeChooser();
       workflowGraphic.classList.add("is-static");
       workflowGraphic.setAttribute("aria-label", "Interaktives Workflow-Diagramm ohne Animation. Mit der Maus oder dem Finger verschieben; die Pfeiltasten verschieben das Diagramm.");
       workflowAnimationShow.hidden = false;
@@ -1846,6 +2007,8 @@
     };
 
     const showAnimatedWorkflow = () => {
+      workflowModeChosen = true;
+      syncWorkflowModeChooser();
       workflowGraphic.classList.remove("is-static");
       workflowGraphic.setAttribute("aria-label", "Animiertes interaktives Workflow-Diagramm. Mit der Maus oder dem Finger verschieben; die Pfeiltasten verschieben das Diagramm.");
       workflowAnimationShow.hidden = true;
@@ -1856,7 +2019,7 @@
         workflowPlaybackStatus.textContent = "Animation ist wegen reduzierter Bewegung deaktiviert. Alle Schritte bleiben als Text verfügbar.";
       } else {
         workflowPlaybackStatus.textContent = activeLanguage === "de"
-          ? "Animation und Ton starten nach Auswahl von „Animation starten“."
+          ? "Animation und Ton starten nach Auswahl der Animation."
           : "Animation bereit.";
       }
     };
@@ -1871,6 +2034,11 @@
     workflowZoomIn.addEventListener("click", () => zoomWorkflow(1.25));
     workflowStatic.addEventListener("click", showStaticWorkflow);
     workflowAnimationShow.addEventListener("click", showAnimatedWorkflow);
+    workflowAnimationChoice.addEventListener("click", () => {
+      showAnimatedWorkflow();
+      startWorkflowPlayback();
+    });
+    workflowDiagramChoice.addEventListener("click", showStaticWorkflow);
 
     workflowGraphic.addEventListener("pointerdown", (event) => {
       if (!event.isPrimary || event.target.closest("button, .workflow-playback")) return;
@@ -1925,8 +2093,9 @@
     applyStaticTranslations();
     applyComponentTranslations();
     renderWorkflowScene();
+    syncWorkflowModeChooser();
     workflowPlaybackStatus.textContent = activeLanguage === "de"
-      ? "Animation und Ton starten nach Auswahl von „Animation starten“."
+      ? "Animation und Ton starten nach Auswahl der Animation."
       : "Animation bereit.";
 
     const localGenieData = document.getElementById("local-genie-data");
@@ -1950,8 +2119,9 @@
         applyStaticTranslations();
         applyComponentTranslations();
         renderWorkflowScene();
+        syncWorkflowModeChooser();
         workflowPlaybackStatus.textContent = activeLanguage === "de"
-          ? "Animation und Ton starten nach Auswahl von „Animation starten“."
+          ? "Animation und Ton starten nach Auswahl der Animation."
           : "Animation bereit.";
         if (genies.length) updateGenieTranslations();
       });
