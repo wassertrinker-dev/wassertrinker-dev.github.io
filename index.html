@@ -531,21 +531,6 @@
     .workflow-mode-poster img { object-position: center top; }
     .workflow-mode-diagram img { object-position: center top; }
 
-    .workflow-poster-ai-label {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      padding: 4px 7px;
-      border: 1px solid rgba(255, 255, 255, .8);
-      border-radius: 999px;
-      color: #fff;
-      background: rgba(0, 0, 0, .88);
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .04em;
-      line-height: 1;
-    }
-
     .workflow-play-icon {
       position: absolute;
       display: grid;
@@ -1254,7 +1239,6 @@
               <button class="workflow-mode-choice" id="workflow-animation-choice" type="button">
                 <span class="workflow-mode-preview workflow-mode-poster">
                   <img src="assets/talking_head/processed/shot1-poster.jpg" alt="">
-                  <span class="workflow-poster-ai-label">KI-generiert</span>
                   <span class="workflow-play-icon" aria-hidden="true">▶</span>
                 </span>
                 <span class="workflow-mode-copy">
@@ -1300,7 +1284,7 @@
               <button id="workflow-play" type="button" data-i18n="startAnimation">Animation starten</button>
               <button id="workflow-reset" type="button" data-i18n="reset">Zurücksetzen</button>
               <button id="workflow-static" type="button" data-i18n="staticDiagram">Diagramm ohne Animation</button>
-              <p class="workflow-playback-status" id="workflow-playback-status">Animation und Ton starten nach Auswahl der Animation.</p>
+              <p class="workflow-playback-status" id="workflow-playback-status">Animation und Ton starten nach Auswahl von „Animation starten“.</p>
             </div>
           </section>
         </div>
@@ -2019,7 +2003,7 @@
         workflowPlaybackStatus.textContent = "Animation ist wegen reduzierter Bewegung deaktiviert. Alle Schritte bleiben als Text verfügbar.";
       } else {
         workflowPlaybackStatus.textContent = activeLanguage === "de"
-          ? "Animation und Ton starten nach Auswahl der Animation."
+          ? "Animation und Ton starten nach Auswahl von „Animation starten“."
           : "Animation bereit.";
       }
     };
@@ -2095,7 +2079,7 @@
     renderWorkflowScene();
     syncWorkflowModeChooser();
     workflowPlaybackStatus.textContent = activeLanguage === "de"
-      ? "Animation und Ton starten nach Auswahl der Animation."
+      ? "Animation und Ton starten nach Auswahl von „Animation starten“."
       : "Animation bereit.";
 
     const localGenieData = document.getElementById("local-genie-data");
@@ -2121,7 +2105,7 @@
         renderWorkflowScene();
         syncWorkflowModeChooser();
         workflowPlaybackStatus.textContent = activeLanguage === "de"
-          ? "Animation und Ton starten nach Auswahl der Animation."
+          ? "Animation und Ton starten nach Auswahl von „Animation starten“."
           : "Animation bereit.";
         if (genies.length) updateGenieTranslations();
       });
