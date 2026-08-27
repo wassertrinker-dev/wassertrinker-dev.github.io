@@ -543,6 +543,47 @@
       backdrop-filter: blur(10px);
     }
 
+    .workflow-avatar {
+      position: absolute;
+      z-index: 4;
+      top: 16px;
+      left: 16px;
+      width: clamp(108px, 15vw, 150px);
+      aspect-ratio: 5 / 9;
+      overflow: hidden;
+      border: 1px solid var(--accent-hover);
+      border-radius: 16px;
+      background: var(--deep);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, .42);
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .workflow-avatar[hidden],
+    :root:not([data-language="de"]) .workflow-avatar { display: none; }
+
+    .workflow-ai-label {
+      position: absolute;
+      z-index: 5;
+      top: 24px;
+      left: 24px;
+      display: none;
+      padding: 4px 7px;
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(0, 0, 0, .88);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .workflow-avatar:not([hidden]) + .workflow-ai-label { display: block; }
+    :root:not([data-language="de"]) .workflow-ai-label,
+    .workflow-graphic.is-static .workflow-ai-label { display: none; }
+
     .workflow-tool {
       min-width: 38px;
       min-height: 38px;
@@ -565,7 +606,8 @@
     .workflow-mode-tool { white-space: nowrap; }
 
     .workflow-graphic.is-static .workflow-playback,
-    .workflow-graphic.is-static .workflow-highlight { display: none; }
+    .workflow-graphic.is-static .workflow-highlight,
+    .workflow-graphic.is-static .workflow-avatar { display: none; }
 
     .workflow-graphic.is-static .workflow-canvas { transition: none; }
 
@@ -980,6 +1022,8 @@
       .body li { font-size: .88rem; }
       .workflow-graphic { height: 68vh; min-height: 380px; }
       .workflow-toolbar { top: 10px; right: 10px; }
+      .workflow-avatar { top: 10px; left: 10px; width: 94px; border-radius: 12px; }
+      .workflow-ai-label { top: 16px; left: 16px; }
       .workflow-playback { right: 8px; bottom: 8px; left: 8px; padding: 10px; }
       .workflow-scene { min-height: 100px; padding: 10px 12px; }
       .workflow-playback-status { display: none; }
@@ -1089,6 +1133,8 @@
             <button class="workflow-tool" id="workflow-zoom-reset" type="button" aria-label="Ansicht einpassen">Fit</button>
             <button class="workflow-tool" id="workflow-zoom-in" type="button" aria-label="Vergrößern" data-i18n-aria-label="zoomIn">+</button>
           </div>
+          <video class="workflow-avatar" id="workflow-avatar" playsinline preload="none" hidden aria-label="KI-generierter Talking Head des Projektinhabers"></video>
+          <span class="workflow-ai-label" aria-hidden="true">KI-generiert</span>
           <div class="workflow-canvas" id="workflow-canvas">
             <img class="workflow-export" src="assets/workflow/workflow-diagram.svg" alt="Ablaufdiagramm: Ein Mensch entwickelt mit dem Story Writer Agent eine Story bis zur Freigabe. Ein Lead Agent implementiert auf dem Story-Branch. Nach Test und Pull Request prüfen fünf unabhängige Agenten gleichzeitig UX, Architektur, Codequalität, Security sowie Tests und Dokumentation. Die Ergebnisse laufen in einer gemeinsamen GO- oder NO-GO-Entscheidung zusammen. Bei NO-GO wird nachgebessert; bei GO entscheidet ein Mensch über den Merge und GitHub Pages veröffentlicht aus main.">
             <div class="workflow-highlight" id="workflow-highlight" aria-hidden="true"></div>
@@ -1108,7 +1154,7 @@
               <button id="workflow-play" type="button" data-i18n="startAnimation">Animation starten</button>
               <button id="workflow-reset" type="button" data-i18n="reset">Zurücksetzen</button>
               <button id="workflow-static" type="button" data-i18n="staticDiagram">Diagramm ohne Animation</button>
-              <p class="workflow-playback-status" id="workflow-playback-status">Das aktuelle Wort wird in Sprechgeschwindigkeit hervorgehoben.</p>
+              <p class="workflow-playback-status" id="workflow-playback-status">Animation und Ton starten nach Auswahl von „Animation starten“.</p>
             </div>
           </section>
         </div>
@@ -1268,7 +1314,7 @@
       document.documentElement.lang = activeLanguage;
       document.documentElement.dir = activeLanguage === "ar" ? "rtl" : "ltr";
       document.documentElement.dataset.language = activeLanguage;
-      document.querySelectorAll("[data-language]").forEach((button) => {
+      document.querySelectorAll(".language-button[data-language]").forEach((button) => {
         const isActive = button.dataset.language === activeLanguage;
         button.setAttribute("aria-pressed", String(isActive));
       });
@@ -1531,12 +1577,18 @@
     const workflowSceneText = document.getElementById("workflow-scene-text");
     const workflowProgressBar = document.getElementById("workflow-progress-bar");
     const workflowPlaybackStatus = document.getElementById("workflow-playback-status");
+    const workflowAvatar = document.getElementById("workflow-avatar");
+    const workflowVideoSources = Array.from({ length: 11 }, (_, index) => `assets/talking_head/processed/shot${index + 1}.mp4`);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let workflowSceneIndex = 0;
     let workflowPlaybackTimer = null;
     let workflowWordTimer = null;
     let workflowPlaying = false;
-    let workflowAutoStarted = false;
+    let workflowSceneStarted = false;
+    let workflowSceneDurationMs = 0;
+    let workflowSceneRemainingMs = 0;
+    let workflowSceneStartedAt = 0;
+    let workflowMediaFailed = false;
     const workflowHighlightFrames = [
       [285, 38, 330, 80], [285, 38, 330, 80], [285, 160, 330, 222], [330, 420, 240, 120],
       [285, 582, 330, 90], [285, 872, 330, 90], [285, 1004, 330, 222], [20, 1260, 860, 260],
@@ -1548,13 +1600,17 @@
       workflowSceneStep.textContent = step;
       workflowSceneTitle.textContent = title;
       workflowSceneText.setAttribute("aria-label", text);
-      workflowSceneText.replaceChildren(...text.split(/\s+/).map((word) => {
-        const span = document.createElement("span");
-        span.className = "spoken-word";
-        span.textContent = word;
-        span.setAttribute("aria-hidden", "true");
-        return span;
-      }));
+      if (activeLanguage === "de") {
+        workflowSceneText.textContent = text;
+      } else {
+        workflowSceneText.replaceChildren(...text.split(/\s+/).map((word) => {
+          const span = document.createElement("span");
+          span.className = "spoken-word";
+          span.textContent = word;
+          span.setAttribute("aria-hidden", "true");
+          return span;
+        }));
+      }
       workflowSceneCount.textContent = `${translate("scene")} ${workflowSceneIndex + 1} / ${workflowScenes.length}`;
       workflowProgressBar.style.width = `${((workflowSceneIndex + 1) / workflowScenes.length) * 100}%`;
       const [x, y, width, height] = workflowHighlightFrames[workflowSceneIndex];
@@ -1562,26 +1618,51 @@
       Object.assign(workflowHighlight.style, { left: `${x}px`, top: `${y}px`, width: `${width}px`, height: `${height}px` });
     };
 
-    const stopWorkflowPlayback = () => {
+    const clearWorkflowTimers = () => {
       window.clearTimeout(workflowPlaybackTimer);
       window.clearInterval(workflowWordTimer);
       workflowPlaybackTimer = null;
       workflowWordTimer = null;
+    };
+
+    const resetWorkflowMedia = () => {
+      workflowAvatar.pause();
+      workflowAvatar.hidden = true;
+      workflowAvatar.removeAttribute("src");
+      workflowAvatar.removeAttribute("data-scene");
+      workflowAvatar.load();
+      workflowMediaFailed = false;
+    };
+
+    const stopWorkflowPlayback = () => {
+      clearWorkflowTimers();
+      resetWorkflowMedia();
       workflowPlaying = false;
+      workflowSceneStarted = false;
+      workflowSceneDurationMs = 0;
+      workflowSceneRemainingMs = 0;
       workflowPlay.textContent = translate("startAnimation");
       workflowGraphic.classList.remove("is-playing");
     };
 
-    const playWorkflowScene = () => {
-      renderWorkflowScene();
-      if (!workflowPlaying) return;
-      const duration = workflowScenes[workflowSceneIndex][3] * 1000;
-      const words = [...workflowSceneText.children];
-      let wordIndex = 0;
-      workflowGraphic.classList.add("is-playing");
-      focusWorkflowFrame(workflowHighlightFrames[workflowSceneIndex]);
-      words[0]?.classList.add("is-current");
+    const scheduleWorkflowAdvance = (duration) => {
+      window.clearTimeout(workflowPlaybackTimer);
+      workflowSceneRemainingMs = Math.max(0, duration);
+      workflowSceneStartedAt = performance.now();
+      workflowPlaybackTimer = window.setTimeout(() => advanceWorkflowScene(), workflowSceneRemainingMs);
+    };
+
+    const startWorkflowWordHighlighting = () => {
       window.clearInterval(workflowWordTimer);
+      if (activeLanguage === "de") return;
+      const words = [...workflowSceneText.children];
+      if (!words.length) return;
+      words.forEach((word) => word.classList.remove("is-current"));
+      let wordIndex = Math.min(
+        words.length - 1,
+        Math.floor(((workflowSceneDurationMs - workflowSceneRemainingMs) / workflowSceneDurationMs) * words.length),
+      );
+      words[wordIndex]?.classList.add("is-current");
       workflowWordTimer = window.setInterval(() => {
         words[wordIndex]?.classList.remove("is-current");
         wordIndex += 1;
@@ -1590,26 +1671,99 @@
           return;
         }
         words[wordIndex].classList.add("is-current");
-      }, Math.max(220, duration / Math.max(words.length, 1)));
-      workflowPlaybackTimer = window.setTimeout(() => {
-        if (workflowSceneIndex === workflowScenes.length - 1) {
-          stopWorkflowPlayback();
-          workflowPlaybackStatus.textContent = "Animation abgeschlossen. Der gesamte Workflow ist sichtbar.";
-          workflowSceneIndex = 0;
-          return;
-        }
-        workflowSceneIndex += 1;
-        playWorkflowScene();
-      }, duration);
+      }, Math.max(220, workflowSceneDurationMs / words.length));
+    };
+
+    const handleWorkflowMediaFailure = () => {
+      if (workflowMediaFailed || !workflowPlaying || activeLanguage !== "de" || Number(workflowAvatar.dataset.scene) !== workflowSceneIndex) return;
+      workflowMediaFailed = true;
+      workflowAvatar.pause();
+      workflowAvatar.hidden = true;
+      const elapsedMedia = Number.isFinite(workflowAvatar.currentTime) ? workflowAvatar.currentTime * 1000 : 0;
+      workflowPlaybackStatus.textContent = "Der Clip konnte nicht abgespielt werden. Der Workflow läuft ohne Talking Head weiter.";
+      scheduleWorkflowAdvance(Math.max(500, workflowSceneDurationMs - elapsedMedia));
+    };
+
+    const playGermanWorkflowVideo = ({ resume = false } = {}) => {
+      if (resume && workflowMediaFailed) {
+        scheduleWorkflowAdvance(workflowSceneRemainingMs || workflowSceneDurationMs);
+        return;
+      }
+
+      if (!resume) {
+        workflowMediaFailed = false;
+        workflowAvatar.src = workflowVideoSources[workflowSceneIndex];
+        workflowAvatar.dataset.scene = String(workflowSceneIndex);
+        workflowAvatar.hidden = false;
+      }
+
+      workflowAvatar.hidden = false;
+      const playback = workflowAvatar.play();
+      playback?.catch(handleWorkflowMediaFailure);
+    };
+
+    const playWorkflowScene = ({ resume = false } = {}) => {
+      if (!workflowPlaying) return;
+      if (!resume) {
+        renderWorkflowScene();
+        workflowSceneStarted = true;
+        workflowSceneDurationMs = workflowScenes[workflowSceneIndex][3] * 1000;
+        workflowSceneRemainingMs = workflowSceneDurationMs;
+      }
+      workflowGraphic.classList.add("is-playing");
+      focusWorkflowFrame(workflowHighlightFrames[workflowSceneIndex]);
+
+      if (activeLanguage === "de") {
+        playGermanWorkflowVideo({ resume });
+      } else {
+        startWorkflowWordHighlighting();
+        scheduleWorkflowAdvance(workflowSceneRemainingMs);
+      }
+    };
+
+    function advanceWorkflowScene() {
+      if (!workflowPlaying) return;
+      clearWorkflowTimers();
+      workflowAvatar.pause();
+      workflowAvatar.hidden = true;
+      if (workflowSceneIndex === workflowScenes.length - 1) {
+        stopWorkflowPlayback();
+        workflowPlaybackStatus.textContent = "Animation abgeschlossen. Der gesamte Workflow ist sichtbar.";
+        workflowSceneIndex = 0;
+        return;
+      }
+      workflowSceneIndex += 1;
+      workflowSceneStarted = false;
+      playWorkflowScene();
+    }
+
+    const pauseWorkflowPlayback = () => {
+      if (workflowPlaybackTimer) {
+        workflowSceneRemainingMs = Math.max(0, workflowSceneRemainingMs - (performance.now() - workflowSceneStartedAt));
+      }
+      clearWorkflowTimers();
+      workflowAvatar.pause();
+      workflowPlaying = false;
+      workflowPlay.textContent = translate("startAnimation");
+      workflowGraphic.classList.remove("is-playing");
     };
 
     const startWorkflowPlayback = () => {
       if (reducedMotion.matches || workflowPlaying) return;
       workflowPlaying = true;
       workflowPlay.textContent = translate("pauseAnimation");
-      workflowPlaybackStatus.textContent = "Animation läuft. Der Text wechselt in Sprechgeschwindigkeit.";
-      playWorkflowScene();
+      workflowPlaybackStatus.textContent = activeLanguage === "de"
+        ? "Talking Head und Animation laufen synchron."
+        : "Animation läuft. Der Text wechselt in Sprechgeschwindigkeit.";
+      playWorkflowScene({ resume: workflowSceneStarted });
     };
+
+    workflowAvatar.addEventListener("ended", () => {
+      if (activeLanguage === "de" && !workflowMediaFailed && Number(workflowAvatar.dataset.scene) === workflowSceneIndex) {
+        advanceWorkflowScene();
+      }
+    });
+    workflowAvatar.addEventListener("error", handleWorkflowMediaFailure);
 
     workflowPlay.addEventListener("click", () => {
       if (reducedMotion.matches) {
@@ -1617,7 +1771,7 @@
         return;
       }
       if (workflowPlaying) {
-        stopWorkflowPlayback();
+        pauseWorkflowPlayback();
         workflowPlaybackStatus.textContent = "Animation pausiert.";
       } else {
         startWorkflowPlayback();
@@ -1684,7 +1838,6 @@
 
     const showStaticWorkflow = () => {
       stopWorkflowPlayback();
-      workflowAutoStarted = true;
       workflowGraphic.classList.add("is-static");
       workflowGraphic.setAttribute("aria-label", "Interaktives Workflow-Diagramm ohne Animation. Mit der Maus oder dem Finger verschieben; die Pfeiltasten verschieben das Diagramm.");
       workflowAnimationShow.hidden = false;
@@ -1702,7 +1855,9 @@
       if (reducedMotion.matches) {
         workflowPlaybackStatus.textContent = "Animation ist wegen reduzierter Bewegung deaktiviert. Alle Schritte bleiben als Text verfügbar.";
       } else {
-        startWorkflowPlayback();
+        workflowPlaybackStatus.textContent = activeLanguage === "de"
+          ? "Animation und Ton starten nach Auswahl von „Animation starten“."
+          : "Animation bereit.";
       }
     };
 
@@ -1770,14 +1925,9 @@
     applyStaticTranslations();
     applyComponentTranslations();
     renderWorkflowScene();
-
-    const workflowObserver = new IntersectionObserver((entries) => {
-      if (workflowAutoStarted || reducedMotion.matches || !entries[0]?.isIntersecting) return;
-      workflowAutoStarted = true;
-      startWorkflowPlayback();
-      workflowObserver.disconnect();
-    }, { threshold: 0.6 });
-    workflowObserver.observe(workflowGraphic);
+    workflowPlaybackStatus.textContent = activeLanguage === "de"
+      ? "Animation und Ton starten nach Auswahl von „Animation starten“."
+      : "Animation bereit.";
 
     const localGenieData = document.getElementById("local-genie-data");
 
@@ -1792,13 +1942,17 @@
       }
     };
 
-    document.querySelectorAll("[data-language]").forEach((button) => {
+    document.querySelectorAll(".language-button[data-language]").forEach((button) => {
       button.addEventListener("click", () => {
+        stopWorkflowPlayback();
         activeLanguage = button.dataset.language;
         localStorage.setItem("language", activeLanguage);
         applyStaticTranslations();
         applyComponentTranslations();
         renderWorkflowScene();
+        workflowPlaybackStatus.textContent = activeLanguage === "de"
+          ? "Animation und Ton starten nach Auswahl von „Animation starten“."
+          : "Animation bereit.";
         if (genies.length) updateGenieTranslations();
       });
     });

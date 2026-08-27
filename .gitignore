@@ -1,0 +1,3 @@
+# Local Talking Head source material; only processed, labelled clips are published.
+/assets/talking_head/shot*.mp4
+/assets/talking_head/transcript.json
