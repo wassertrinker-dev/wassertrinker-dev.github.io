@@ -26,6 +26,12 @@ und `prefers-reduced-motion` müssen Workflow und Medien als gemeinsamen Zustand
 behandeln. Ein nicht abspielbarer Clip darf den übrigen Workflow nicht
 blockieren und fällt deshalb auf die zeitgesteuerte Szene zurück.
 
+Die Animation startet in keiner Sprache automatisch beim Scrollen oder beim
+Wechsel aus dem statischen Modus. Der eingebrannte AI-Hinweis der Clips wird
+durch ein skalierungsunabhängiges, kontrastreiches „KI-generiert“-Overlay
+ergänzt, damit die Kennzeichnung auch bei der kleinen responsiven Darstellung
+lesbar bleibt.
+
 Sprachumschalter werden ausschließlich mit
 `.language-button[data-language]` ausgewählt. Der allgemeinere Selektor
 `[data-language]` ist unzulässig, weil auch das Wurzelelement

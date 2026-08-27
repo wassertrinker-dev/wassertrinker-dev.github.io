@@ -562,6 +562,28 @@
     .workflow-avatar[hidden],
     :root:not([data-language="de"]) .workflow-avatar { display: none; }
 
+    .workflow-ai-label {
+      position: absolute;
+      z-index: 5;
+      top: 24px;
+      left: 24px;
+      display: none;
+      padding: 4px 7px;
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(0, 0, 0, .88);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .workflow-avatar:not([hidden]) + .workflow-ai-label { display: block; }
+    :root:not([data-language="de"]) .workflow-ai-label,
+    .workflow-graphic.is-static .workflow-ai-label { display: none; }
+
     .workflow-tool {
       min-width: 38px;
       min-height: 38px;
@@ -1001,6 +1023,7 @@
       .workflow-graphic { height: 68vh; min-height: 380px; }
       .workflow-toolbar { top: 10px; right: 10px; }
       .workflow-avatar { top: 10px; left: 10px; width: 94px; border-radius: 12px; }
+      .workflow-ai-label { top: 16px; left: 16px; }
       .workflow-playback { right: 8px; bottom: 8px; left: 8px; padding: 10px; }
       .workflow-scene { min-height: 100px; padding: 10px 12px; }
       .workflow-playback-status { display: none; }
@@ -1111,6 +1134,7 @@
             <button class="workflow-tool" id="workflow-zoom-in" type="button" aria-label="Vergrößern" data-i18n-aria-label="zoomIn">+</button>
           </div>
           <video class="workflow-avatar" id="workflow-avatar" playsinline preload="none" hidden aria-label="KI-generierter Talking Head des Projektinhabers"></video>
+          <span class="workflow-ai-label" aria-hidden="true">KI-generiert</span>
           <div class="workflow-canvas" id="workflow-canvas">
             <img class="workflow-export" src="assets/workflow/workflow-diagram.svg" alt="Ablaufdiagramm: Ein Mensch entwickelt mit dem Story Writer Agent eine Story bis zur Freigabe. Ein Lead Agent implementiert auf dem Story-Branch. Nach Test und Pull Request prüfen fünf unabhängige Agenten gleichzeitig UX, Architektur, Codequalität, Security sowie Tests und Dokumentation. Die Ergebnisse laufen in einer gemeinsamen GO- oder NO-GO-Entscheidung zusammen. Bei NO-GO wird nachgebessert; bei GO entscheidet ein Mensch über den Merge und GitHub Pages veröffentlicht aus main.">
             <div class="workflow-highlight" id="workflow-highlight" aria-hidden="true"></div>
@@ -1560,7 +1584,6 @@
     let workflowPlaybackTimer = null;
     let workflowWordTimer = null;
     let workflowPlaying = false;
-    let workflowAutoStarted = false;
     let workflowSceneStarted = false;
     let workflowSceneDurationMs = 0;
     let workflowSceneRemainingMs = 0;
@@ -1815,7 +1838,6 @@
 
     const showStaticWorkflow = () => {
       stopWorkflowPlayback();
-      workflowAutoStarted = true;
       workflowGraphic.classList.add("is-static");
       workflowGraphic.setAttribute("aria-label", "Interaktives Workflow-Diagramm ohne Animation. Mit der Maus oder dem Finger verschieben; die Pfeiltasten verschieben das Diagramm.");
       workflowAnimationShow.hidden = false;
@@ -1833,7 +1855,9 @@
       if (reducedMotion.matches) {
         workflowPlaybackStatus.textContent = "Animation ist wegen reduzierter Bewegung deaktiviert. Alle Schritte bleiben als Text verfügbar.";
       } else {
-        startWorkflowPlayback();
+        workflowPlaybackStatus.textContent = activeLanguage === "de"
+          ? "Animation und Ton starten nach Auswahl von „Animation starten“."
+          : "Animation bereit.";
       }
     };
 
@@ -1904,18 +1928,6 @@
     workflowPlaybackStatus.textContent = activeLanguage === "de"
       ? "Animation und Ton starten nach Auswahl von „Animation starten“."
       : "Animation bereit.";
-
-    const workflowObserver = new IntersectionObserver((entries) => {
-      if (workflowAutoStarted || reducedMotion.matches || !entries[0]?.isIntersecting) return;
-      if (activeLanguage === "de") {
-        workflowPlaybackStatus.textContent = "Animation und Ton starten nach Auswahl von „Animation starten“.";
-        return;
-      }
-      workflowAutoStarted = true;
-      startWorkflowPlayback();
-      workflowObserver.disconnect();
-    }, { threshold: 0.6 });
-    workflowObserver.observe(workflowGraphic);
 
     const localGenieData = document.getElementById("local-genie-data");
 
