@@ -1566,7 +1566,6 @@
     let workflowSceneRemainingMs = 0;
     let workflowSceneStartedAt = 0;
     let workflowMediaFailed = false;
-    let workflowMediaRequest = 0;
     const workflowHighlightFrames = [
       [285, 38, 330, 80], [285, 38, 330, 80], [285, 160, 330, 222], [330, 420, 240, 120],
       [285, 582, 330, 90], [285, 872, 330, 90], [285, 1004, 330, 222], [20, 1260, 860, 260],
@@ -1604,7 +1603,6 @@
     };
 
     const resetWorkflowMedia = () => {
-      workflowMediaRequest += 1;
       workflowAvatar.pause();
       workflowAvatar.hidden = true;
       workflowAvatar.removeAttribute("src");
@@ -1663,13 +1661,6 @@
       scheduleWorkflowAdvance(Math.max(500, workflowSceneDurationMs - elapsedMedia));
     };
 
-    const scheduleWorkflowMediaWatchdog = () => {
-      const remainingMedia = Number.isFinite(workflowAvatar.duration)
-        ? Math.max(0, workflowAvatar.duration - workflowAvatar.currentTime) * 1000 + 2000
-        : workflowSceneDurationMs + 5000;
-      scheduleWorkflowAdvance(remainingMedia);
-    };
-
     const playGermanWorkflowVideo = ({ resume = false } = {}) => {
       if (resume && workflowMediaFailed) {
         scheduleWorkflowAdvance(workflowSceneRemainingMs || workflowSceneDurationMs);
@@ -1677,27 +1668,15 @@
       }
 
       if (!resume) {
-        const request = ++workflowMediaRequest;
         workflowMediaFailed = false;
         workflowAvatar.src = workflowVideoSources[workflowSceneIndex];
         workflowAvatar.dataset.scene = String(workflowSceneIndex);
         workflowAvatar.hidden = false;
-        workflowAvatar.load();
-        scheduleWorkflowMediaWatchdog();
-        const playback = workflowAvatar.play();
-        playback?.catch(() => {
-          if (request === workflowMediaRequest) handleWorkflowMediaFailure();
-        });
-        return;
       }
 
       workflowAvatar.hidden = false;
-      const request = workflowMediaRequest;
       const playback = workflowAvatar.play();
-      scheduleWorkflowMediaWatchdog();
-      playback?.catch(() => {
-        if (request === workflowMediaRequest) handleWorkflowMediaFailure();
-      });
+      playback?.catch(handleWorkflowMediaFailure);
     };
 
     const playWorkflowScene = ({ resume = false } = {}) => {
@@ -1746,12 +1725,8 @@
       workflowGraphic.classList.remove("is-playing");
     };
 
-    const startWorkflowPlayback = ({ userInitiated = false } = {}) => {
+    const startWorkflowPlayback = () => {
       if (reducedMotion.matches || workflowPlaying) return;
-      if (activeLanguage === "de" && !userInitiated) {
-        workflowPlaybackStatus.textContent = "Animation und Ton starten nach Auswahl von „Animation starten“.";
-        return;
-      }
       workflowPlaying = true;
       workflowPlay.textContent = translate("pauseAnimation");
       workflowPlaybackStatus.textContent = activeLanguage === "de"
@@ -1765,11 +1740,6 @@
         advanceWorkflowScene();
       }
     });
-    workflowAvatar.addEventListener("loadedmetadata", () => {
-      if (!workflowMediaFailed && workflowPlaying && activeLanguage === "de" && Number(workflowAvatar.dataset.scene) === workflowSceneIndex) {
-        scheduleWorkflowMediaWatchdog();
-      }
-    });
     workflowAvatar.addEventListener("error", handleWorkflowMediaFailure);
 
     workflowPlay.addEventListener("click", () => {
@@ -1781,7 +1751,7 @@
         pauseWorkflowPlayback();
         workflowPlaybackStatus.textContent = "Animation pausiert.";
       } else {
-        startWorkflowPlayback({ userInitiated: true });
+        startWorkflowPlayback();
       }
     });
 
@@ -1863,7 +1833,7 @@
       if (reducedMotion.matches) {
         workflowPlaybackStatus.textContent = "Animation ist wegen reduzierter Bewegung deaktiviert. Alle Schritte bleiben als Text verfügbar.";
       } else {
-        startWorkflowPlayback({ userInitiated: true });
+        startWorkflowPlayback();
       }
     };
 
@@ -1937,6 +1907,10 @@
 
     const workflowObserver = new IntersectionObserver((entries) => {
       if (workflowAutoStarted || reducedMotion.matches || !entries[0]?.isIntersecting) return;
+      if (activeLanguage === "de") {
+        workflowPlaybackStatus.textContent = "Animation und Ton starten nach Auswahl von „Animation starten“.";
+        return;
+      }
       workflowAutoStarted = true;
       startWorkflowPlayback();
       workflowObserver.disconnect();
