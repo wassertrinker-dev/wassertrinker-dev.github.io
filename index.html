@@ -531,6 +531,21 @@
     .workflow-mode-poster img { object-position: center top; }
     .workflow-mode-diagram img { object-position: center top; }
 
+    .workflow-poster-ai-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 7px;
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(0, 0, 0, .88);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      line-height: 1;
+    }
+
     .workflow-play-icon {
       position: absolute;
       display: grid;
@@ -1239,6 +1254,7 @@
               <button class="workflow-mode-choice" id="workflow-animation-choice" type="button">
                 <span class="workflow-mode-preview workflow-mode-poster">
                   <img src="assets/talking_head/processed/shot1-poster.jpg" alt="">
+                  <span class="workflow-poster-ai-label">KI-generiert</span>
                   <span class="workflow-play-icon" aria-hidden="true">▶</span>
                 </span>
                 <span class="workflow-mode-copy">
