@@ -27,8 +27,9 @@ Quelle gesetzt. Das Ende des Clips steuert den Wechsel zur nächsten Szene;
 nichtdeutsche Sprachversionen verwenden weiterhin die zeitgesteuerte Animation
 ohne deutschen Talking Head.
 
-Die Wiedergabe mit Ton beginnt ausschließlich nach der Schaltfläche
-„Animation starten“. Pause, Fortsetzen, Reset, Sprachwechsel, statischer Modus
+Die Wiedergabe mit Ton beginnt ausschließlich nach der bewussten Auswahl der
+Animation im deutschen Moduswähler oder nach der Schaltfläche „Animation
+starten“. Pause, Fortsetzen, Reset, Sprachwechsel, statischer Modus
 und `prefers-reduced-motion` müssen Workflow und Medien als gemeinsamen Zustand
 behandeln. Ein nicht abspielbarer Clip darf den übrigen Workflow nicht
 blockieren und fällt deshalb auf die zeitgesteuerte Szene zurück.
