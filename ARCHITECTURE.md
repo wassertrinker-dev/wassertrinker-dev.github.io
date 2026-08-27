@@ -14,6 +14,13 @@ Die Case Study ist als feste App-Struktur aufgebaut:
 
 ## Workflow mit Talking Head
 
+In der deutschen Ansicht wird vor dem Abspielen ein Moduswähler für die
+Talking-Head-Animation oder das statische Diagramm gezeigt. Nach der Auswahl
+greifen die bestehenden Start-, Pause-, Fortsetzen- und Reset-Zustände. In
+nichtdeutschen Sprachversionen ohne Talking Head erscheint dieser Moduswähler
+nicht; dort bleibt der bisherige Einstieg in die zeitgesteuerte Animation
+erhalten.
+
 Die deutsche Workflow-Animation verwendet genau ein Videoelement. Die Clips
 `shot1.mp4` bis `shot11.mp4` werden erst beim Start ihrer jeweiligen Szene als
 Quelle gesetzt. Das Ende des Clips steuert den Wechsel zur nächsten Szene;
