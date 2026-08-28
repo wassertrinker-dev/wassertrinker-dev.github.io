@@ -716,53 +716,6 @@
       filter: sepia(1) saturate(1.25) hue-rotate(350deg);
     }
 
-    .workflow-steps {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin: 22px 0 0;
-      padding: 0;
-      list-style: none;
-      counter-reset: workflow-step;
-    }
-
-    .workflow-steps li {
-      position: relative;
-      min-height: 116px;
-      padding: 16px 14px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--accent-fade);
-      counter-increment: workflow-step;
-    }
-
-    .workflow-steps li::before {
-      content: "0" counter(workflow-step);
-      display: block;
-      margin-bottom: 10px;
-      color: var(--accent);
-      font-size: .72rem;
-      font-weight: 800;
-      letter-spacing: .12em;
-    }
-
-    .workflow-steps strong,
-    .workflow-steps span {
-      display: block;
-    }
-
-    .workflow-steps strong {
-      font-size: .92rem;
-      line-height: 1.2;
-    }
-
-    .workflow-steps span {
-      margin-top: 7px;
-      color: var(--muted);
-      font-size: .78rem;
-      line-height: 1.4;
-    }
-
     .workflow-source {
       margin: 16px 0 0;
       color: var(--muted);
@@ -1071,8 +1024,6 @@
       .hero { grid-template-columns: 1fr; }
       .visual { max-width: 590px; width: 100%; margin: 0 auto; }
       .iceberg { min-height: 480px; }
-      .workflow-steps { grid-template-columns: 1fr; }
-
       .section-navigation {
         position: absolute;
         top: 12px;
@@ -1291,16 +1242,6 @@
         <figcaption class="workflow-source">Animation und Hervorhebungen basieren auf der freigegebenen <a href="assets/workflow/workflow-diagram.excalidraw">Excalidraw-Quelldatei</a>.</figcaption>
       </figure>
 
-      <ol class="workflow-steps" aria-label="Workflow mit Entscheidungen und Wiederholungen als Text">
-        <li><strong>Story Writer Agent</strong><span>Ein Mensch und der spezialisierte Story Writer Agent besprechen die Idee. Entwurf und Akzeptanzkriterien werden so lange geschärft, bis der Mensch „Story freigeben“ sagt.</span></li>
-        <li><strong>GitHub Issue erstellen</strong><span>Erst nach der Freigabe wird der Entwurf zur verbindlichen User Story.</span></li>
-        <li><strong>Nächsten Schritt wählen</strong><span>Es können weitere Stories mit dem Story Writer vorbereitet werden – oder die Umsetzung einer freigegebenen Story beginnt.</span></li>
-        <li><strong>Lead Agent implementiert</strong><span>Während der Umsetzung arbeitet genau ein Agent schreibend auf dem Story-Branch. Danach folgen Test und notwendige Dokumentation.</span></li>
-        <li><strong>Pull Request erstellen</strong><span>Die geprüfte Änderung wird mit der verbindlichen Story verknüpft und zur Abnahme bereitgestellt.</span></li>
-        <li><strong>Fünf Agenten prüfen parallel</strong><span>UX, Architektur, Codequalität, Security sowie Tests und Dokumentation untersuchen den Pull Request unabhängig und gleichzeitig. Ihre Ergebnisse werden zu GO oder NO-GO zusammengeführt.</span></li>
-        <li><strong>Bei NO-GO nachbessern</strong><span>Blockierende Befunde gehen zurück an die Umsetzung. Nach Korrektur und Test läuft das Merge Gate erneut.</span></li>
-        <li><strong>Menschlich freigeben und veröffentlichen</strong><span>Nur nach ausdrücklicher Freigabe wird nach <code>main</code> gemergt; GitHub Pages veröffentlicht daraus die Seite.</span></li>
-      </ol>
     </section>
 
     <section class="content-section genies" id="genies" data-section aria-labelledby="genies-heading">
