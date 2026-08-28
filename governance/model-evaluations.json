@@ -1,4 +1,52 @@
 {
   "schemaVersion": "1.0",
-  "evaluations": []
+  "evaluations": [
+    {
+      "issueNumber": 40,
+      "storyType": "enabler",
+      "storyPoints": 8,
+      "riskClass": "medium",
+      "recommendation": {
+        "model": {
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "reasoning": {
+            "nativeSetting": "medium",
+            "normalizedLevel": 3
+          }
+        },
+        "rationale": "Ausgewogen für eine mittelgroße, gut prüfbare Enabler-Story."
+      },
+      "execution": {
+        "model": {
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "reasoning": {
+            "nativeSetting": "medium",
+            "normalizedLevel": 3
+          }
+        },
+        "environment": "hosted",
+        "metadataSource": "human-confirmed"
+      },
+      "outcome": {
+        "mergedAt": "2026-08-28T17:35:52Z",
+        "mergeGate": "GO",
+        "acceptanceCriteria": "passed",
+        "rework": "minor",
+        "measurement": {
+          "durationMinutes": null,
+          "inputTokens": null,
+          "outputTokens": null,
+          "costUsd": null
+        }
+      },
+      "assessment": "fit",
+      "comparisonCandidate": {
+        "provider": "openai",
+        "model": "gpt-5.6-luna",
+        "reason": "Bei einer vergleichbaren, risikoarmen Dokumentations-Story als kleineren Kandidaten prüfen."
+      }
+    }
+  ]
 }
