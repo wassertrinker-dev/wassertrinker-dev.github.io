@@ -8,3 +8,5 @@
 - Dokumentation wird nur beim Abschluss einer Story oder bei einem Release aktualisiert.
 - GitHub Pages wird aus main veröffentlicht.
 - Vor Änderungen am Seitenlayout muss `ARCHITECTURE.md` gelesen werden.
+- Vor der Implementierung einer Story wird die Modell- und Reasoning-Empfehlung gemäß `MODEL_SELECTION.md` festgehalten.
+- Nach einem bestätigten Merge wird der Ausführungsdatensatz in `governance/model-evaluations.json` ergänzt. Technische Metadaten dürfen nur bei sicherer Herkunft übernommen werden; andernfalls ist eine menschliche Bestätigung verpflichtend.

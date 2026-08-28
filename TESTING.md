@@ -27,6 +27,7 @@ dem Start kein Request auf `assets/talking_head/processed/shot*.mp4` erscheinen.
 Statische Prüfungen vor dem Merge:
 
 - Alle Inline-Skripte aus `index.html` mit `node --check` prüfen.
+- `node scripts/check-model-evaluations.mjs` prüft die Struktur der Modell-Lernbasis.
 - `git diff --check origin/main...HEAD` ausführen.
 - Vorhandensein aller elf finalen Clips prüfen.
 - Mit `ffprobe` Dauer, Abmessungen und H.264/AAC-Streams gegen
