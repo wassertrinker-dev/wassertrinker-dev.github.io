@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Simon Dietz — Technical Automation & Transformation Lead. Aerospace, automotive software, international delivery and AI-assisted engineering.">
+  <meta name="theme-color" content="#07111f">
+  <title>Simon Dietz — Technical Automation & Transformation Lead</title>
+  <style>
+    :root{color-scheme:dark;--bg:#07111f;--panel:#0b1b2d;--ink:#f3f7fb;--muted:#9fb2c7;--line:rgba(255,255,255,.14);--accent:#62d9ff;--ice:#bcecff;--gold:#d4a843;--max:1180px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(circle at 78% 0,rgba(98,217,255,.13),transparent 32rem),linear-gradient(180deg,var(--bg),#0a2036 48%,var(--bg));font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}a{color:inherit}.wrap{width:calc(100% - 40px);max-width:var(--max);margin:auto}.topbar{position:sticky;z-index:10;top:0;border-bottom:1px solid var(--line);background:rgba(7,17,31,.9);backdrop-filter:blur(18px)}.nav{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:22px}.brand{font-size:.76rem;font-weight:900;letter-spacing:.17em;text-decoration:none;text-transform:uppercase}.links{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap}.navlink,.button{display:inline-flex;min-height:38px;align-items:center;justify-content:center;padding:0 14px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:.78rem;font-weight:800}.navlink:hover,.button:hover{border-color:var(--accent);background:rgba(98,217,255,.08)}.button{border-color:rgba(188,236,255,.35);color:var(--bg);background:var(--ice)}.button:hover{color:var(--ink)}
+    .hero{padding:clamp(72px,11vw,138px) 0 72px}.eyebrow,.label{margin:0;color:var(--accent);font-size:.72rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase}.hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);gap:clamp(38px,7vw,90px);align-items:end}.hero h1{max-width:820px;margin:18px 0 0;font-size:clamp(3.1rem,7vw,6.6rem);line-height:.91;letter-spacing:-.065em}.hero h1 span{display:block;color:var(--ice)}.lead{max-width:760px;margin:30px 0 0;color:var(--muted);font-size:clamp(1.08rem,2vw,1.38rem)}.lead strong{color:var(--ink)}.identity{padding:24px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(135deg,rgba(98,217,255,.1),transparent),rgba(11,27,45,.72)}.identity strong{display:block;margin-top:10px;font-size:1.4rem;line-height:1.15}.identity p{margin:14px 0 0;color:var(--muted);font-size:.93rem}.status{display:inline-flex;margin-top:20px;align-items:center;gap:9px;color:var(--ice);font-size:.8rem;font-weight:800}.status::before{content:"";width:8px;height:8px;border-radius:50%;background:#b9e86e;box-shadow:0 0 0 5px rgba(185,232,110,.1)}
+    section{padding:70px 0}.section-head{display:grid;grid-template-columns:.65fr 1.35fr;gap:40px;margin-bottom:32px}.section-head h2{margin:0;font-size:clamp(2rem,4vw,3.3rem);line-height:1;letter-spacing:-.045em}.section-head p{max-width:680px;margin:0;color:var(--muted);font-size:1.05rem}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{padding:25px;border:1px solid var(--line);border-radius:20px;background:rgba(11,27,45,.66)}.card .number{color:var(--gold);font:900 .72rem ui-monospace,monospace;letter-spacing:.12em}.card h3{margin:19px 0 9px;font-size:1.08rem}.card p{margin:0;color:var(--muted);font-size:.91rem}.missions{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.mission{position:relative;overflow:hidden;min-height:240px;padding:29px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(140deg,rgba(98,217,255,.09),transparent 62%),rgba(11,27,45,.58)}.mission::after{content:attr(data-index);position:absolute;right:18px;bottom:-30px;color:rgba(188,236,255,.055);font-size:8rem;font-weight:900}.mission h3{margin:15px 0 10px;font-size:1.32rem}.mission p{max-width:520px;margin:0;color:var(--muted)}.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:19px}.tag{padding:5px 9px;border:1px solid var(--line);border-radius:999px;color:var(--ice);font-size:.72rem;font-weight:800}
+    .truth{display:grid;grid-template-columns:1fr 1fr;gap:14px}.truth>div{padding:28px;border-radius:22px}.truth .yes{border:1px solid rgba(98,217,255,.3);background:rgba(98,217,255,.08)}.truth .no{border:1px solid var(--line);background:rgba(255,255,255,.025)}.truth h3{margin:10px 0 16px}.truth ul{margin:0;padding-left:19px;color:var(--muted)}.truth li+li{margin-top:9px}.machine{padding:clamp(28px,5vw,52px);border:1px solid rgba(212,168,67,.35);border-radius:28px;background:linear-gradient(125deg,rgba(212,168,67,.13),rgba(98,217,255,.05))}.machine-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:45px;align-items:center}.machine h2{margin:13px 0 16px;font-size:clamp(2rem,4vw,3.3rem);line-height:1}.machine p{margin:0;color:var(--muted)}.code{padding:20px;border:1px solid var(--line);border-radius:16px;background:#050c16;color:#cce9f5;font:500 .78rem/1.7 ui-monospace,SFMono-Regular,monospace;white-space:pre-wrap}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px}.actions .button.secondary{color:var(--ink);background:transparent}.foot{padding:36px 0 46px;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem}.foot .wrap{display:flex;justify-content:space-between;gap:20px}.foot a{color:var(--ice)}
+    @media(max-width:850px){.hero-grid,.section-head,.machine-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.missions{grid-template-columns:1fr}.identity{max-width:560px}.section-head{gap:18px}}
+    @media(max-width:580px){.wrap{width:calc(100% - 28px)}.nav{align-items:flex-start;padding:15px 0}.links .navlink:first-child{display:none}.hero{padding-top:65px}.hero h1{font-size:clamp(2.8rem,16vw,4.5rem)}.grid,.truth{grid-template-columns:1fr}.card,.mission{border-radius:16px}.foot .wrap{display:grid}.button{font-size:.72rem}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="wrap nav" aria-label="Primary navigation">
+      <a class="brand" href="who-i-am.html">Simon Dietz</a>
+      <div class="links">
+        <a class="navlink" href="index.html">AI Product Engineering</a>
+        <a class="navlink" href="#evidence">Evidence</a>
+        <a class="button" href="Simon_Dietz_Professional_Profile.md" download>Download profile.md</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Automation · Transformation · Delivery</p>
+          <h1>I make complex technical systems <span>work.</span></h1>
+          <p class="lead">I take ownership where <strong>manual processes, unclear responsibilities and organizational dependencies</strong> prevent reliable execution — and turn them into scalable systems.</p>
+        </div>
+        <aside class="identity">
+          <p class="label">Closest market label</p>
+          <strong>Technical Automation &amp; Transformation Lead</strong>
+          <p>Aerospace, automotive software, international delivery and AI-assisted engineering.</p>
+          <span class="status">Open to the right challenge</span>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head"><h2>What I bring</h2><p>Not another list of fashionable adjectives. These are the recurring patterns across my work.</p></div>
+        <div class="grid">
+          <article class="card"><span class="number">01</span><h3>Automation instinct</h3><p>If a repeated technical step can run reliably without a person pressing a button, I want to make that happen.</p></article>
+          <article class="card"><span class="number">02</span><h3>System thinking</h3><p>I connect tools, processes, responsibilities, evidence and people into an operating system that teams can actually use.</p></article>
+          <article class="card"><span class="number">03</span><h3>Ownership</h3><p>I stay with the problem beyond the concept, through resistance and into the last mile of working delivery.</p></article>
+          <article class="card"><span class="number">04</span><h3>Technical credibility</h3><p>From embedded prototypes and aerospace integration to vehicle automation and local AI workflows.</p></article>
+          <article class="card"><span class="number">05</span><h3>People without theatre</h3><p>Short meetings, explicit decisions, written actions and respect for the engineers who need space to solve problems.</p></article>
+          <article class="card"><span class="number">06</span><h3>Unfamiliar territory</h3><p>I repeatedly enter new domains, find the constraint and build enough understanding to move the whole system.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="evidence">
+      <div class="wrap">
+        <div class="section-head"><h2>Selected evidence</h2><p>The full profile contains scope, boundaries and additional context. These four missions show the range.</p></div>
+        <div class="missions">
+          <article class="mission" data-index="1"><p class="label">Aerospace</p><h3>From repeated manual tests to overnight regression</h3><p>Built and evolved automated system testing from first launcher through command-line, virtualization and distributed execution in a safety-critical integration environment.</p><div class="tags"><span class="tag">Integration</span><span class="tag">Automation</span><span class="tag">Performance</span></div></article>
+          <article class="mission" data-index="2"><p class="label">Automotive</p><h3>Operating models for teams that need to deliver</h3><p>Steered external test organizations, established routines and evidence, drove automation against resistance and navigated enterprise product governance.</p><div class="tags"><span class="tag">Suppliers</span><span class="tag">Governance</span><span class="tag">Transformation</span></div></article>
+          <article class="mission" data-index="3"><p class="label">International delivery</p><h3>Go where the delivery problem is</h3><p>Worked with distributed teams in Germany, China, India and Turkey — including direct interventions when remote reporting no longer explained reality.</p><div class="tags"><span class="tag">China</span><span class="tag">India</span><span class="tag">Turnaround</span></div></article>
+          <article class="mission" data-index="4"><p class="label">AI-native engineering</p><h3>The prompt is only the tip</h3><p>Designed an agent-based delivery process around requirements, stories, architecture, specialist agents, quality gates, validation and human approval.</p><div class="tags"><span class="tag">Agents</span><span class="tag">Product thinking</span><span class="tag">Quality</span></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head"><h2>Clear boundaries</h2><p>A useful profile should say what is true — and what is not.</p></div>
+        <div class="truth">
+          <div class="yes"><p class="label">Strong fit</p><h3>Complex technical delivery</h3><ul><li>Automation and engineering enablement</li><li>Technical transformation and stabilization</li><li>Internal platforms and last-mile integration</li><li>Distributed teams and supplier delivery</li><li>AI-assisted workflows with governance</li></ul></div>
+          <div class="no"><p class="label">Not the claim</p><h3>No inflated titles</h3><ul><li>No disciplinary line-management claim</li><li>Not a current senior hands-on developer</li><li>Not an enterprise AI architect</li><li>Not pure test administration</li><li>Not PowerPoint transformation without delivery</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap machine">
+        <div class="machine-grid">
+          <div><p class="label">Model-agnostic profile</p><h2>Let your model challenge the fit.</h2><p>The complete Markdown profile contains evidence, explicit boundaries and a suggested evaluation prompt. Use it with any capable language model and the actual mandate. It instructs the model to separate evidence, inference and missing information instead of inventing a perfect candidate.</p><div class="actions"><a class="button" href="Simon_Dietz_Professional_Profile.md" download>Download complete Markdown</a><a class="button secondary" href="index.html">Explore my AI workflow</a></div></div>
+          <div class="code">INPUT
+candidate_profile.md
++ role_or_mandate.txt
+
+RETURN
+• likely real mission
+• strongest evidence
+• gaps and risks
+• verification needs
+• interview questions
+• confidence</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot"><div class="wrap"><span>Simon Dietz · Professional profile · 2026</span><span><a href="https://github.com/wassertrinker-dev/wassertrinker-dev.github.io">View source on GitHub</a></span></div></footer>
+</body>
+</html>
