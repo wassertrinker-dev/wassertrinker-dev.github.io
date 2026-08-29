@@ -310,7 +310,7 @@ Poor fit:
 - Content, mandate and organizational stability matter more than maximizing compensation.
 - No immediate employment emergency; the objective is the right next challenge.
 
-Compensation should be discussed against the actual mandate, work model, travel, pension, bonus and risk. The current total compensation is approximately EUR 130,000 including variable elements, but a lower figure can be acceptable for the right role.
+Compensation should be discussed against the actual mandate, work model, travel, pension, bonus and risk. The right challenge and a credible mandate matter more than publishing or maximizing a single headline figure.
 
 ## Important boundaries for evaluation
 
