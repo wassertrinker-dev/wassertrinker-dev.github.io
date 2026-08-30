@@ -1,6 +1,8 @@
 - GitHub Issues sind die verbindlichen User Stories.
 - Implementiert werden nur ausdrücklich freigegebene Stories.
 - Jede Story wird auf einem eigenen Branch `story/<issue-nummer>-<kurzname>` umgesetzt.
+- Neue Story-Branches werden mit `git fetch origin main` und `git switch -c story/<issue-nummer>-<kurzname> origin/main` erstellt.
+- Vor dem ersten Push werden `git log --oneline origin/main..HEAD` und `git diff --name-only origin/main...HEAD` geprüft; fremde Commits oder Dateien dürfen nicht in den Story-PR gelangen.
 - Während der Implementierung arbeitet nur ein Agent schreibend am Code.
 - Vor einem Merge nach main muss das Merge-Gate bestanden sein.
 - Ein Merge oder Push erfolgt nur nach ausdrücklicher menschlicher Freigabe.
@@ -9,4 +11,4 @@
 - GitHub Pages wird aus main veröffentlicht.
 - Vor Änderungen am Seitenlayout muss `ARCHITECTURE.md` gelesen werden.
 - Vor der Implementierung einer Story wird die Modell- und Reasoning-Empfehlung gemäß `MODEL_SELECTION.md` festgehalten.
-- Nach einem bestätigten Merge wird der Ausführungsdatensatz in `governance/model-evaluations.json` ergänzt. Technische Metadaten dürfen nur bei sicherer Herkunft übernommen werden; andernfalls ist eine menschliche Bestätigung verpflichtend.
+- Vor dem Merge wird der Modelldatensatz im ursprünglichen Story-Branch ergänzt und validiert. Technische Metadaten dürfen nur bei sicherer Herkunft übernommen werden; andernfalls ist eine menschliche Bestätigung vor dem Merge-Gate verpflichtend.
