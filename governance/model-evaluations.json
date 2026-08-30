@@ -2,6 +2,53 @@
   "schemaVersion": "1.0",
   "evaluations": [
     {
+      "issueNumber": 36,
+      "storyType": "enabler",
+      "storyPoints": 5,
+      "riskClass": "medium",
+      "recommendation": {
+        "model": {
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "reasoning": {
+            "nativeSetting": "medium",
+            "normalizedLevel": 3
+          }
+        },
+        "rationale": "Substanzielle, aber dokumentationsbasierte Architekturanalyse mit einem eng abgegrenzten und gut prüfbaren Ergebnis."
+      },
+      "execution": {
+        "model": {
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "reasoning": {
+            "nativeSetting": "medium",
+            "normalizedLevel": 3
+          }
+        },
+        "environment": "hosted",
+        "metadataSource": "human-confirmed"
+      },
+      "outcome": {
+        "mergedAt": "2026-08-30T09:10:41Z",
+        "mergeGate": "GO",
+        "acceptanceCriteria": "passed",
+        "rework": "minor",
+        "measurement": {
+          "durationMinutes": null,
+          "inputTokens": null,
+          "outputTokens": null,
+          "costUsd": null
+        }
+      },
+      "assessment": "oversized",
+      "comparisonCandidate": {
+        "provider": "openai",
+        "model": "gpt-5.6-terra",
+        "reason": "Die empfohlene Terra-Konfiguration mit gleicher Reasoning-Stufe sollte bei einer vergleichbaren Dokumentations- und Audit-Story als kleinerer Kandidat geprüft werden."
+      }
+    },
+    {
       "issueNumber": 40,
       "storyType": "enabler",
       "storyPoints": 8,
