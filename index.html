@@ -1096,6 +1096,7 @@
     <div class="header-inner">
       <a class="mark" href="#eisberg" data-i18n="brand">Wassertrinker.de Case Study</a>
       <div class="header-actions">
+        <a class="header-link" href="wer-bin-ich.html" data-i18n="about">Wer bin ich?</a>
         <a class="header-link" href="https://wassertrinker-dev.github.io/Motion-Leap/dist/" data-i18n="motionLeap">Motion Leap ansehen</a>
         <button class="theme-toggle" id="change-style" type="button" aria-pressed="false" data-i18n="changeStyle">Change Style</button>
         <div class="language-switcher" role="group" aria-label="Sprache wählen" data-i18n-aria-label="languagePicker">
@@ -1357,7 +1358,15 @@
       ],
     };
     let activeLanguage = document.documentElement.dataset.language || "de";
-    const translate = (key) => translations[activeLanguage]?.[key] || translations.de[key] || key;
+    const sharedNavigationTranslations = {
+      de: { about: "Wer bin ich?" },
+      en: { about: "About me" },
+      zh: { about: "关于我" },
+      hi: { about: "मेरे बारे में" },
+      es: { about: "Sobre mí" },
+      ar: { about: "من أنا؟" },
+    };
+    const translate = (key) => translations[activeLanguage]?.[key] || sharedNavigationTranslations[activeLanguage]?.[key] || translations.de[key] || sharedNavigationTranslations.de[key] || key;
     const applyStaticTranslations = () => {
       document.title = translate("pageTitle");
       document.querySelector('meta[name="description"]').setAttribute("content", translate("pageDescription"));

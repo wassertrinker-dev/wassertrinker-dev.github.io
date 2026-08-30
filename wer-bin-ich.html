@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ein kurzer persönlicher Einblick in die Arbeit hinter der Wassertrinker.de Case Study.">
+  <meta name="theme-color" content="#07111f">
+  <title>Wer bin ich? · Wassertrinker.de</title>
+  <script>
+    const supportedLanguageCodes = ["de", "en", "zh", "hi", "es", "ar"];
+    const storedLanguage = localStorage.getItem("language");
+    const browserLanguage = navigator.language.toLowerCase().split("-")[0];
+    const initialLanguage = supportedLanguageCodes.includes(storedLanguage)
+      ? storedLanguage
+      : supportedLanguageCodes.includes(browserLanguage) ? browserLanguage : "de";
+    document.documentElement.lang = initialLanguage;
+    document.documentElement.dir = initialLanguage === "ar" ? "rtl" : "ltr";
+    document.documentElement.dataset.language = initialLanguage;
+    if (localStorage.getItem("theme") === "gold") document.documentElement.dataset.theme = "gold";
+  </script>
+  <style>
+    :root { color-scheme: dark; --ink: #f3f7fb; --muted: #9fb2c7; --line: rgba(255,255,255,.14); --ice: #bcecff; --accent: #62d9ff; --deep: #07111f; --deep-2: #0a2036; --accent-glow: rgba(98,217,255,.13); --accent-hover: rgba(98,217,255,.75); --accent-tint: rgba(98,217,255,.08); --ice-border: rgba(188,236,255,.3); }
+    :root[data-theme="gold"] { --ink: #fff8e7; --muted: #d8c49a; --line: rgba(255,226,153,.2); --ice: #f3d685; --accent: #d4a843; --deep: #171005; --deep-2: #302009; --accent-glow: rgba(212,168,67,.16); --accent-hover: rgba(212,168,67,.8); --accent-tint: rgba(212,168,67,.12); --ice-border: rgba(243,214,133,.35); }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { min-height: 100vh; margin: 0; font-family: Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color: var(--ink); background: radial-gradient(circle at 20% 5%,var(--accent-glow),transparent 34rem),linear-gradient(180deg,var(--deep),var(--deep-2) 48%,var(--deep)); }
+    a { color: inherit; }
+    .site-header { position: sticky; top: 0; z-index: 2; border-bottom: 1px solid var(--line); background: color-mix(in srgb,var(--deep) 92%,transparent); backdrop-filter: blur(16px); }
+    .header-inner { display:flex; align-items:center; justify-content:space-between; gap:24px; width:calc(100% - 40px); max-width:1120px; min-height:72px; margin:0 auto; }
+    .mark { font-size:.78rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; text-decoration:none; }
+    .header-actions { display:flex; align-items:center; gap:10px; }
+    .header-link,.sign-in-button { display:inline-flex; min-height:38px; align-items:center; justify-content:center; padding:0 13px; border:1px solid var(--line); border-radius:999px; color:var(--ink); background:transparent; text-decoration:none; cursor:pointer; font:inherit; font-size:.78rem; font-weight:750; transition:transform .2s ease,border-color .2s ease,background .2s ease; }
+    .header-link:hover,.header-link:focus-visible,.sign-in-button:hover,.sign-in-button:focus-visible { transform:translateY(-2px); border-color:var(--accent-hover); background:var(--accent-tint); }
+    .sign-in-button { border-color:var(--ice-border); color:var(--deep); background:var(--ice); }
+    .theme-toggle { display:inline-flex; align-items:center; gap:9px; min-height:38px; padding:5px 7px 5px 12px; border:1px solid var(--line); border-radius:999px; color:var(--ink); background:transparent; cursor:pointer; font:inherit; font-size:.78rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .theme-toggle:hover,.theme-toggle:focus-visible { border-color:var(--accent-hover); background:var(--accent-tint); }
+    .theme-toggle::after { content:""; width:26px; height:26px; border-radius:50%; background:var(--accent); box-shadow:inset -7px -7px 0 rgba(0,0,0,.16); }
+    .language-switcher { display:flex; align-items:center; gap:3px; padding:3px; border:1px solid var(--line); border-radius:999px; }
+    .language-button { min-width:32px; min-height:30px; padding:0 6px; border:0; border-radius:999px; color:var(--muted); background:transparent; cursor:pointer; font:inherit; font-size:.7rem; font-weight:800; }
+    .language-button:hover,.language-button:focus-visible { color:var(--ink); background:var(--accent-tint); }
+    .language-button[aria-pressed="true"] { color:var(--deep); background:var(--accent); }
+    main { width:min(100% - 40px,1120px); margin:0 auto; padding:clamp(56px,11vw,132px) 0 72px; }
+    .intro { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(240px,.9fr); gap:clamp(32px,7vw,84px); align-items:start; }
+    .eyebrow { margin:0 0 20px; color:var(--accent); font-size:.78rem; font-weight:800; letter-spacing:.2em; text-transform:uppercase; }
+    h1 { max-width:720px; margin:0; font-size:clamp(3rem,7vw,6rem); line-height:.92; letter-spacing:-.07em; }
+    h1 span { display:block; color:var(--ice); }
+    .lead { max-width:650px; margin:30px 0 0; color:var(--muted); font-size:clamp(1.05rem,2vw,1.3rem); line-height:1.65; }
+    .card { padding:clamp(24px,4vw,42px); border:1px solid var(--line); border-radius:24px; background:color-mix(in srgb,var(--deep) 76%,transparent); box-shadow:0 20px 55px rgba(0,0,0,.17); }
+    .card h2 { margin:0; font-size:1.15rem; letter-spacing:-.02em; }
+    .card p { margin:16px 0 0; color:var(--muted); line-height:1.7; }
+    .note { margin-top:clamp(56px,10vw,120px); padding-top:24px; border-top:1px solid var(--line); color:var(--muted); line-height:1.65; }
+    :root[dir="rtl"] .header-inner,:root[dir="rtl"] .header-actions { direction:rtl; }
+    @media (max-width: 900px) { .header-inner { width:min(100% - 28px,1120px); min-height:62px; flex-wrap:wrap; gap:8px 12px; padding:9px 0; } .header-actions { width:100%; justify-content:space-between; gap:6px; } .language-switcher { order:1; max-width:42vw; } .language-button { min-width:28px; padding-inline:5px; } .header-link { padding:0 8px; font-size:.68rem; } .sign-in-button { padding:0 10px; font-size:.7rem; } .theme-toggle { padding-left:10px; font-size:.7rem; } main { width:min(100% - 28px,1120px); padding-top:64px; } .intro { grid-template-columns:1fr; } }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="mark" href="index.html#eisberg" data-i18n="brand">Wassertrinker.de Case Study</a>
+      <div class="header-actions">
+        <a class="header-link" href="index.html#eisberg" data-i18n="caseStudy">Case Study</a>
+        <a class="header-link" href="https://wassertrinker-dev.github.io/Motion-Leap/dist/" data-i18n="motionLeap">Motion Leap ansehen</a>
+        <button class="theme-toggle" id="change-style" type="button" aria-pressed="false" data-i18n="changeStyle">Style wechseln</button>
+        <div class="language-switcher" role="group" aria-label="Sprache wählen" data-i18n-aria-label="languagePicker">
+          <button class="language-button" type="button" data-language="de" aria-pressed="true" aria-label="Deutsch">DE</button>
+          <button class="language-button" type="button" data-language="en" aria-pressed="false" aria-label="English">EN</button>
+          <button class="language-button" type="button" data-language="zh" aria-pressed="false" aria-label="中文">中文</button>
+          <button class="language-button" type="button" data-language="hi" aria-pressed="false" aria-label="हिन्दी">हि</button>
+          <button class="language-button" type="button" data-language="es" aria-pressed="false" aria-label="Español">ES</button>
+          <button class="language-button" type="button" data-language="ar" aria-pressed="false" aria-label="العربية">ع</button>
+        </div>
+        <button class="sign-in-button" type="button" data-i18n="signIn">Anmelden</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="about-title">
+      <div>
+        <p class="eyebrow" data-i18n="eyebrow">Persönlicher Einblick</p>
+        <h1 id="about-title" data-i18n-html="title">Das <span>bin ich.</span></h1>
+        <p class="lead" data-i18n="lead">Hier entsteht nach und nach ein persönlicher Einblick in die Person hinter der Case Study. Für den Anfang: Ich mag es, Ideen gemeinsam klar zu machen und sie dann sorgfältig in etwas Nutzbares zu verwandeln.</p>
+      </div>
+      <aside class="card" aria-labelledby="working-title">
+        <h2 id="working-title" data-i18n="cardTitle">Woran ich arbeite</h2>
+        <p data-i18n="cardText">Ich beschäftige mich mit digitalen Produkten, verständlichen Abläufen und der Frage, wie Menschen und AI Agents gut zusammenarbeiten können.</p>
+      </aside>
+    </section>
+    <p class="note" data-i18n="note">Diese Seite ist bewusst ein erster Platzhalter. Die persönliche Geschichte, Projekte und weitere Inhalte folgen Schritt für Schritt.</p>
+  </main>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const translations = {
+        de: { pageTitle:"Wer bin ich? · Wassertrinker.de", pageDescription:"Ein kurzer persönlicher Einblick in die Arbeit hinter der Wassertrinker.de Case Study.", brand:"Wassertrinker.de Case Study", caseStudy:"Case Study", motionLeap:"Motion Leap ansehen", changeStyle:"Style wechseln", languagePicker:"Sprache wählen", signIn:"Anmelden", eyebrow:"Persönlicher Einblick", title:"Das <span>bin ich.</span>", lead:"Hier entsteht nach und nach ein persönlicher Einblick in die Person hinter der Case Study. Für den Anfang: Ich mag es, Ideen gemeinsam klar zu machen und sie dann sorgfältig in etwas Nutzbares zu verwandeln.", cardTitle:"Woran ich arbeite", cardText:"Ich beschäftige mich mit digitalen Produkten, verständlichen Abläufen und der Frage, wie Menschen und AI Agents gut zusammenarbeiten können.", note:"Diese Seite ist bewusst ein erster Platzhalter. Die persönliche Geschichte, Projekte und weitere Inhalte folgen Schritt für Schritt." },
+        en: { pageTitle:"About me · Wassertrinker.de", pageDescription:"A short personal view of the work behind the Wassertrinker.de case study.", brand:"Wassertrinker.de Case Study", caseStudy:"Case study", motionLeap:"View Motion Leap", changeStyle:"Change style", languagePicker:"Choose language", signIn:"Sign in", eyebrow:"A personal view", title:"This <span>is me.</span>", lead:"This is gradually becoming a personal view of the person behind the case study. For now: I enjoy making ideas clear together, then carefully turning them into something useful.", cardTitle:"What I work on", cardText:"I work with digital products, understandable processes, and the question of how people and AI agents can collaborate well.", note:"This page is deliberately a first placeholder. The personal story, projects, and more content will follow step by step." },
+        zh: { pageTitle:"关于我 · Wassertrinker.de", pageDescription:"简要介绍 Wassertrinker.de 案例研究背后的工作。", brand:"Wassertrinker.de 案例研究", caseStudy:"案例研究", motionLeap:"查看 Motion Leap", changeStyle:"切换风格", languagePicker:"选择语言", signIn:"登录", eyebrow:"个人介绍", title:"这就是<span>我。</span>", lead:"这里会逐步呈现案例研究背后的人。现在先说一点：我喜欢把想法一起梳理清楚，然后认真把它们变成有用的成果。", cardTitle:"我在做什么", cardText:"我关注数字产品、易于理解的流程，以及人类如何能与 AI 智能体良好协作。", note:"此页面有意作为第一个占位版本。个人故事、项目和更多内容将逐步补充。" },
+        hi: { pageTitle:"मेरे बारे में · Wassertrinker.de", pageDescription:"Wassertrinker.de केस स्टडी के पीछे के काम की एक संक्षिप्त व्यक्तिगत झलक।", brand:"Wassertrinker.de केस स्टडी", caseStudy:"केस स्टडी", motionLeap:"Motion Leap देखें", changeStyle:"स्टाइल बदलें", languagePicker:"भाषा चुनें", signIn:"साइन इन", eyebrow:"व्यक्तिगत झलक", title:"यह <span>मैं हूँ।</span>", lead:"यहाँ धीरे-धीरे केस स्टडी के पीछे के व्यक्ति की व्यक्तिगत झलक बनेगी। शुरुआत के लिए: मुझे विचारों को मिलकर स्पष्ट करना और फिर उन्हें ध्यान से उपयोगी चीज़ में बदलना पसंद है।", cardTitle:"मैं किस पर काम करता हूँ", cardText:"मैं डिजिटल उत्पादों, समझने योग्य प्रक्रियाओं और इस प्रश्न पर काम करता हूँ कि लोग और AI एजेंट अच्छी तरह साथ कैसे काम कर सकते हैं।", note:"यह पृष्ठ जानबूझकर पहला प्लेसहोल्डर है। व्यक्तिगत कहानी, परियोजनाएँ और अधिक सामग्री धीरे-धीरे आएँगी।" },
+        es: { pageTitle:"Sobre mí · Wassertrinker.de", pageDescription:"Una breve mirada personal al trabajo detrás del caso de estudio de Wassertrinker.de.", brand:"Caso de estudio Wassertrinker.de", caseStudy:"Caso de estudio", motionLeap:"Ver Motion Leap", changeStyle:"Cambiar estilo", languagePicker:"Elegir idioma", signIn:"Iniciar sesión", eyebrow:"Una mirada personal", title:"Este <span>soy yo.</span>", lead:"Aquí irá tomando forma una mirada personal a la persona detrás del caso de estudio. Para empezar: me gusta aclarar las ideas en conjunto y transformarlas cuidadosamente en algo útil.", cardTitle:"En qué trabajo", cardText:"Trabajo con productos digitales, procesos comprensibles y la pregunta de cómo las personas y los agentes de IA pueden colaborar bien.", note:"Esta página es deliberadamente un primer marcador de posición. La historia personal, los proyectos y más contenido llegarán paso a paso." },
+        ar: { pageTitle:"من أنا؟ · Wassertrinker.de", pageDescription:"لمحة شخصية موجزة عن العمل وراء دراسة حالة Wassertrinker.de.", brand:"دراسة حالة Wassertrinker.de", caseStudy:"دراسة الحالة", motionLeap:"عرض Motion Leap", changeStyle:"تغيير النمط", languagePicker:"اختر اللغة", signIn:"تسجيل الدخول", eyebrow:"لمحة شخصية", title:"هذا <span>أنا.</span>", lead:"ستتكوّن هنا تدريجيًا لمحة شخصية عن الشخص وراء دراسة الحالة. كبداية: أستمتع بتوضيح الأفكار معًا ثم تحويلها بعناية إلى شيء مفيد.", cardTitle:"ما أعمل عليه", cardText:"أعمل على المنتجات الرقمية والعمليات الواضحة ومسألة كيف يمكن للناس ووكلاء الذكاء الاصطناعي التعاون بشكل جيد.", note:"هذه الصفحة عنصر نائب أول مقصود. ستتبع القصة الشخصية والمشاريع والمزيد من المحتوى خطوة بخطوة." }
+      };
+      let activeLanguage = document.documentElement.dataset.language || "de";
+      const translate = (key) => translations[activeLanguage]?.[key] || translations.de[key] || key;
+      const applyTranslations = () => {
+        document.title = translate("pageTitle");
+        document.querySelector('meta[name="description"]').setAttribute("content", translate("pageDescription"));
+        document.querySelectorAll("[data-i18n]").forEach((element) => { element.textContent = translate(element.dataset.i18n); });
+        document.querySelectorAll("[data-i18n-html]").forEach((element) => { element.innerHTML = translate(element.dataset.i18nHtml); });
+        document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => { element.setAttribute("aria-label", translate(element.dataset.i18nAriaLabel)); });
+        document.documentElement.lang = activeLanguage;
+        document.documentElement.dir = activeLanguage === "ar" ? "rtl" : "ltr";
+        document.documentElement.dataset.language = activeLanguage;
+        document.querySelectorAll(".language-button[data-language]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.language === activeLanguage)));
+      };
+      const styleToggle = document.getElementById("change-style");
+      styleToggle.setAttribute("aria-pressed", document.documentElement.dataset.theme === "gold");
+      styleToggle.addEventListener("click", () => {
+        if (document.documentElement.dataset.theme === "gold") localStorage.removeItem("theme");
+        else localStorage.setItem("theme", "gold");
+        window.location.reload();
+      });
+      document.querySelectorAll(".language-button[data-language]").forEach((button) => {
+        button.addEventListener("click", () => {
+          activeLanguage = button.dataset.language;
+          localStorage.setItem("language", activeLanguage);
+          applyTranslations();
+        });
+      });
+      applyTranslations();
+    });
+  </script>
+</body>
+</html>
