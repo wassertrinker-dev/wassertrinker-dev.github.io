@@ -2,6 +2,49 @@
   "schemaVersion": "1.0",
   "evaluations": [
     {
+      "issueNumber": 49,
+      "storyType": "feature",
+      "storyPoints": 5,
+      "riskClass": "medium",
+      "recommendation": {
+        "model": {
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "reasoning": {
+            "nativeSetting": "medium",
+            "normalizedLevel": 3
+          }
+        },
+        "rationale": "Ausgewogen für eine mehrsprachige, seitenübergreifende UI-Erweiterung mit mittlerem Regressionsrisiko."
+      },
+      "execution": {
+        "model": {
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "reasoning": {
+            "nativeSetting": "medium",
+            "normalizedLevel": 3
+          }
+        },
+        "environment": "hosted",
+        "metadataSource": "human-confirmed"
+      },
+      "outcome": {
+        "mergedAt": "2026-08-30T19:29:12Z",
+        "mergeGate": "GO",
+        "acceptanceCriteria": "passed",
+        "rework": "minor",
+        "measurement": {
+          "durationMinutes": null,
+          "inputTokens": null,
+          "outputTokens": null,
+          "costUsd": null
+        }
+      },
+      "assessment": "fit",
+      "comparisonCandidate": null
+    },
+    {
       "issueNumber": 40,
       "storyType": "enabler",
       "storyPoints": 8,
