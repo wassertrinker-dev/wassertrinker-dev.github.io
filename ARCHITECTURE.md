@@ -4,12 +4,18 @@
 
 Die Case Study ist als feste App-Struktur aufgebaut:
 
-- Der Header bleibt am oberen Rand sichtbar und enthält den Seitentitel, den Style-Wechsel, den bewusst noch funktionslosen Button „Anmelden“ und den bestehenden Link „Motion Leap ansehen“.
+- Der Header bleibt am oberen Rand sichtbar und enthält den Seitentitel, die gegenseitige Verlinkung zur Seite „Wer bin ich?“, den Style-Wechsel, den bewusst noch funktionslosen Button „Anmelden“ und den bestehenden Link „Motion Leap ansehen“.
 - Ausschließlich der Inhaltsbereich unter dem Header scrollt und nutzt die verbleibende Seitenhöhe.
 - Eisberg, Workflow und Tote Genies sind eigenständige Inhaltsbereiche innerhalb dieses Scrollbereichs.
 - Die einklappbare Inhaltsnavigation markiert den aktuell sichtbaren Bereich und muss per Maus, Touch und Tastatur nutzbar bleiben.
 
 Änderungen am Seitenlayout müssen diese Struktur erhalten. Neue Inhaltsbereiche werden als eigenständige, semantisch beschriftete Bereiche ergänzt und bei Bedarf in die Inhaltsnavigation aufgenommen.
+
+## Seitenübergreifender Rahmen
+
+`index.html` ist die Case Study, `wer-bin-ich.html` eine eigenständige persönliche Unterseite. Beide Seiten nutzen dieselben Designvariablen, denselben responsiven Header sowie die sechs unterstützten Sprachen Deutsch, Englisch, Chinesisch, Hindi, Spanisch und Arabisch.
+
+Die Header verlinken die beiden Seiten gegenseitig. Sprache und Theme werden über die bestehenden Local-Storage-Schlüssel `language` und `theme` seitenübergreifend gehalten. Arabisch setzt auf beiden Seiten `dir="rtl"`; alle anderen Sprachversionen verwenden `ltr`. Der Button „Anmelden“ bleibt auf beiden Seiten bewusst ohne Funktion.
 
 ## Workflow mit Talking Head
 
