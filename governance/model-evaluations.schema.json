@@ -1,14 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Model evaluation record",
+  "title": "Model decision record",
   "type": "object",
-  "required": ["schemaVersion", "evaluations"],
+  "required": ["schemaVersion", "modelRecords"],
   "additionalProperties": false,
   "properties": {
-    "schemaVersion": { "const": "1.0" },
-    "evaluations": {
+    "schemaVersion": { "const": "2.0" },
+    "modelRecords": {
       "type": "array",
-      "items": { "$ref": "#/$defs/evaluation" }
+      "items": { "$ref": "#/$defs/record" }
     }
   },
   "$defs": {
@@ -31,30 +31,9 @@
         "reasoning": { "$ref": "#/$defs/reasoning" }
       }
     },
-    "measurement": {
+    "record": {
       "type": "object",
-      "required": ["durationMinutes", "inputTokens", "outputTokens", "costUsd"],
-      "additionalProperties": false,
-      "properties": {
-        "durationMinutes": { "type": ["number", "null"], "minimum": 0 },
-        "inputTokens": { "type": ["integer", "null"], "minimum": 0 },
-        "outputTokens": { "type": ["integer", "null"], "minimum": 0 },
-        "costUsd": { "type": ["number", "null"], "minimum": 0 }
-      }
-    },
-    "evaluation": {
-      "type": "object",
-      "required": [
-        "issueNumber",
-        "storyType",
-        "storyPoints",
-        "riskClass",
-        "recommendation",
-        "execution",
-        "outcome",
-        "assessment",
-        "comparisonCandidate"
-      ],
+      "required": ["issueNumber", "storyType", "storyPoints", "riskClass", "recommendation", "execution"],
       "additionalProperties": false,
       "properties": {
         "issueNumber": { "type": "integer", "minimum": 1 },
@@ -78,29 +57,6 @@
             "model": { "$ref": "#/$defs/model" },
             "environment": { "enum": ["hosted", "local"] },
             "metadataSource": { "enum": ["verified-metadata", "human-confirmed"] }
-          }
-        },
-        "outcome": {
-          "type": "object",
-          "required": ["mergedAt", "mergeGate", "acceptanceCriteria", "rework", "measurement"],
-          "additionalProperties": false,
-          "properties": {
-            "mergedAt": { "type": "string", "format": "date-time" },
-            "mergeGate": { "const": "GO" },
-            "acceptanceCriteria": { "const": "passed" },
-            "rework": { "enum": ["none", "minor", "material"] },
-            "measurement": { "$ref": "#/$defs/measurement" }
-          }
-        },
-        "assessment": { "enum": ["fit", "oversized", "insufficient"] },
-        "comparisonCandidate": {
-          "type": ["object", "null"],
-          "required": ["provider", "model", "reason"],
-          "additionalProperties": false,
-          "properties": {
-            "provider": { "type": "string", "minLength": 1 },
-            "model": { "type": "string", "minLength": 1 },
-            "reason": { "type": "string", "minLength": 1 }
           }
         }
       }
