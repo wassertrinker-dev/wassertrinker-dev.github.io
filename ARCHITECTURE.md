@@ -17,6 +17,23 @@ Die Case Study ist als feste App-Struktur aufgebaut:
 
 Die Header verlinken die beiden Seiten gegenseitig. Sprache und Theme werden über die bestehenden Local-Storage-Schlüssel `language` und `theme` seitenübergreifend gehalten. Arabisch setzt auf beiden Seiten `dir="rtl"`; alle anderen Sprachversionen verwenden `ltr`. Der Button „Anmelden“ bleibt auf beiden Seiten bewusst ohne Funktion.
 
+## Persoenliche Profilseite
+
+`wer-bin-ich.html` ist eine eigenstaendige, ruhige Magazinseite und kein
+vollstaendiger Online-Lebenslauf. Der Inhalt ist semantisch in Einstieg mit
+Portrait, drei Ergebniskarten, vier kompakte Entwicklungsschritte, Arbeitsweise,
+bewusste Positionierung, Zielrollen, persoenlichen Abschnitt und Abschluss mit
+drei Handlungsoptionen gegliedert. Diese Reihenfolge beantwortet, wer Simon ist,
+welchen Nutzen er schafft und fuer welche Aufgaben er ansprechbar ist.
+
+Alle sichtbaren Texte, Metadaten, Alternativtexte und relevanten ARIA-Texte der
+Profilseite liegen in `assets/js/about-translations.js`. `wer-bin-ich.html`
+prueft beim Laden die Schluessel aller sechs Sprachen; zusaetzlich prueft
+`node scripts/check-about-me.mjs` die Vollstaendigkeit und die lokalen Assets.
+Das Hero-Portrait ist eine lokal ausgelieferte, responsive JPEG-Datei; ihre
+Herkunft, Nutzungsrechte und KI-Kennzeichnungsentscheidung stehen vor einem
+Merge verbindlich in `assets/images/me/MEDIA_MANIFEST.md`.
+
 ## Workflow mit Talking Head
 
 In der deutschen Ansicht wird vor dem Abspielen ein Moduswähler für die
