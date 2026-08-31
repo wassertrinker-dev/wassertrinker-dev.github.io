@@ -32,7 +32,7 @@ prueft beim Laden die Schluessel aller sechs Sprachen; zusaetzlich prueft
 `node scripts/check-about-me.mjs` die Vollstaendigkeit und die lokalen Assets.
 Das Hero-Portrait ist eine lokal ausgelieferte, responsive JPEG-Datei; ihre
 Herkunft, Nutzungsrechte und KI-Kennzeichnungsentscheidung stehen vor einem
-Merge verbindlich in `assets/images/Me/MEDIA_MANIFEST.md`.
+Merge verbindlich in `assets/images/me/MEDIA_MANIFEST.md`.
 
 ## Workflow mit Talking Head
 

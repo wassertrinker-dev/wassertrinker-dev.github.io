@@ -13,6 +13,6 @@ const required = ["pageTitle", "pageDescription", ...new Set(keys)];
 const failures = [];
 if (languages.length !== 6 || new Set(languages).size !== 6) failures.push("Expected exactly six unique languages.");
 for (const language of languages) for (const key of required) if (typeof translations[language]?.[key] !== "string" || !translations[language][key].trim()) failures.push(`Missing translation: ${language}.${key}`);
-for (const asset of ["assets/images/Me/simon-dietz-portrait.jpg", "assets/images/Me/MEDIA_MANIFEST.md"]) { try { await stat(resolve(root, asset)); } catch { failures.push(`Missing local asset: ${asset}`); } }
+for (const asset of ["assets/images/me/simon-dietz-portrait.jpg", "assets/images/me/MEDIA_MANIFEST.md"]) { try { await stat(resolve(root, asset)); } catch { failures.push(`Missing local asset: ${asset}`); } }
 if (!page.includes('dir=activeLanguage==="ar"?"rtl":"ltr"')) failures.push("Arabic RTL handling is missing.");
 if (failures.length) { console.error(failures.join("\n")); process.exitCode = 1; } else console.log(`About-Me check passed: ${languages.length} languages, ${required.length} required keys.`);
