@@ -71,6 +71,29 @@
       }
     },
     {
+      "issueNumber": 56,
+      "storyType": "feature",
+      "storyPoints": 3,
+      "riskClass": "low",
+      "recommendation": {
+        "model": {
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "reasoning": { "nativeSetting": "medium", "normalizedLevel": 3 }
+        },
+        "rationale": "Ausgewogen fuer eine gut pruefbare, mehrsprachige Inhalts- und Layout-Erweiterung mit geringem technischen Risiko."
+      },
+      "execution": {
+        "model": {
+          "provider": "openai",
+          "model": "gpt-5.6-terra",
+          "reasoning": { "nativeSetting": "medium", "normalizedLevel": 3 }
+        },
+        "environment": "hosted",
+        "metadataSource": "human-confirmed"
+      }
+    },
+    {
       "issueNumber": 54,
       "storyType": "feature",
       "storyPoints": 5,
