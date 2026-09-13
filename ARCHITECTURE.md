@@ -21,10 +21,13 @@ Die Header verlinken die beiden Seiten gegenseitig. Sprache und Theme werden üb
 
 `wer-bin-ich.html` ist eine eigenstaendige, ruhige Magazinseite und kein
 vollstaendiger Online-Lebenslauf. Der Inhalt ist semantisch in Einstieg mit
-Portrait, drei Ergebniskarten, vier kompakte Entwicklungsschritte, Arbeitsweise,
-bewusste Positionierung, Zielrollen, persoenlichen Abschnitt und Abschluss mit
-drei Handlungsoptionen gegliedert. Diese Reihenfolge beantwortet, wer Simon ist,
-welchen Nutzen er schafft und fuer welche Aufgaben er ansprechbar ist.
+Portrait, drei Ergebniskarten, drei konkrete Praxisbeispiele, vier kompakte
+Entwicklungsschritte, Arbeitsweise, bewusste Positionierung, Zielrollen,
+persoenlichen Abschnitt und Abschluss mit drei Handlungsoptionen gegliedert.
+Die Praxisbeispiele folgen dem Muster Problem, Loesung und Learning und bleiben
+frei von vertraulichen Details oder unbelegten Kennzahlen. Diese Reihenfolge
+beantwortet, wer Simon ist, welchen Nutzen er schafft und fuer welche Aufgaben
+er ansprechbar ist.
 
 Alle sichtbaren Texte, Metadaten, Alternativtexte und relevanten ARIA-Texte der
 Profilseite liegen in `assets/js/about-translations.js`. `wer-bin-ich.html`
